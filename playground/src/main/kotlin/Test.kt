@@ -52,7 +52,7 @@ fun storageBox() {
 
 fun export(g: Geometry, filename: String) {
     JavaScadExporter().exportToScad(
-        GeometryConverter().convert(g), filename
+        JavaScadGeometryConverter().convert(g), filename
     ).let { exported ->
         if (exported) println("Exported model to $filename")
     }

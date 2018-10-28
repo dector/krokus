@@ -1,4 +1,4 @@
-package scad
+package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.basic.Radius
 import eu.printingin3d.javascad.coords.Coords3d

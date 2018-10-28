@@ -1,4 +1,4 @@
-package scad
+package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.models.Abstract3dModel
 import eu.printingin3d.javascad.utils.SaveScadFiles

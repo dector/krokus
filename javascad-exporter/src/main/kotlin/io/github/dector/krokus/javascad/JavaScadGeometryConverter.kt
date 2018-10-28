@@ -1,8 +1,9 @@
-package scad
+package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.coords.Coords3d
 import eu.printingin3d.javascad.coords.Dims3d
 import eu.printingin3d.javascad.models.Abstract3dModel
+import io.github.dector.krokus.converter.GeometryConverter
 import io.github.dector.krokus.geometry.Combined
 import io.github.dector.krokus.geometry.Cube
 import io.github.dector.krokus.geometry.Geometry
@@ -18,9 +19,9 @@ import eu.printingin3d.javascad.tranzitions.Translate as JTranslate
 import eu.printingin3d.javascad.tranzitions.Union as JUnion
 
 
-class GeometryConverter {
+class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
 
-    fun convert(g: Geometry): Abstract3dModel {
+    override fun convert(g: Geometry): Abstract3dModel {
         return unpackGeometry(g)
     }
 
