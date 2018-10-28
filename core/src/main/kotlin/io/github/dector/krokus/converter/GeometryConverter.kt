@@ -5,5 +5,5 @@ import io.github.dector.krokus.geometry.Geometry
 
 interface GeometryConverter<T> {
 
-    fun convert(g: Geometry): T
+    fun convert(geometry: Geometry): T
 }

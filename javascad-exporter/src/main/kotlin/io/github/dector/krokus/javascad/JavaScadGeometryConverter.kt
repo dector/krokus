@@ -21,8 +21,8 @@ import eu.printingin3d.javascad.tranzitions.Union as JUnion
 
 class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
 
-    override fun convert(g: Geometry): Abstract3dModel {
-        return unpackGeometry(g)
+    override fun convert(geometry: Geometry): Abstract3dModel {
+        return unpackGeometry(geometry)
     }
 
     private fun unpackGeometry(g: Geometry): Abstract3dModel {
