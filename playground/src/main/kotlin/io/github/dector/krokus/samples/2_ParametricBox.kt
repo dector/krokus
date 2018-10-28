@@ -1,11 +1,7 @@
 package io.github.dector.krokus.samples
 
-import io.github.dector.krokus.geometry.Geometry
-import io.github.dector.krokus.geometry.atPos
-import io.github.dector.krokus.geometry.minus
-import io.github.dector.krokus.geometry.unite
-import io.github.dector.krokus.vector.Vector3
-import io.github.dector.krokus.vector.v
+import io.github.dector.krokus.geometry.*
+import io.github.dector.krokus.vector.*
 
 
 fun main(args: Array<String>) {
@@ -18,9 +14,10 @@ fun main(args: Array<String>) {
 }
 
 private fun shell(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
-    val boxSize = (cellsConfig.size.wh() + boxConfig.innerWall) * Vector2(cellsConfig.columns, cellsConfig.rows) - boxConfig.innerWall + 2 * boxConfig.outerWall
+    val boxSize = ((cellsConfig.size.wh() + boxConfig.innerWall) scale
+            v2(cellsConfig.columns, cellsConfig.rows)) - boxConfig.innerWall + 2 * boxConfig.outerWall
 
-    return io.github.dector.krokus.geometry.cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))
+    return cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))
 }
 
 private fun cells(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
@@ -47,20 +44,15 @@ private data class BoxConfig(
     val bottom: Int
 )
 
-data class Vector2(val x: Int, val y: Int)
-
 data class Dimen3(val width: Int, val height: Int, val depth: Int)
 
-fun Dimen3.wh() = Vector2(width, height)
+fun Dimen3.wh() = v2(width, height)
 
-operator fun Vector2.plus(value: Int) = Vector2(x = x + value, y = y + value)
-operator fun Vector2.minus(value: Int) = Vector2(x = x - value, y = y - value)
+fun v2(x: Int, y: Int) = Vector2(x.toFloat(), y.toFloat())
 
-operator fun Vector2.times(other: Vector2) = Vector2(x = x * other.x, y = y * other.y)
+fun Vector2.withZ(z: Int) = Vector3(x = x, y = y, z = z.toFloat())
 
-fun Vector2.withZ(z: Int) = Vector3(x = x.toFloat(), y = y.toFloat(), z = z.toFloat())
-
-fun cube(size: Dimen3) = io.github.dector.krokus.geometry.cube(size.asVector())
+fun cube(size: Dimen3) = cube(size.asVector())
 
 fun Dimen3.asVector() = Vector3(width.toFloat(), height.toFloat(), depth.toFloat())
 
