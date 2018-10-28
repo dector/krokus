@@ -1,12 +1,11 @@
 package io.github.dector.krokus.samples
 
-import atPos
-import cube
-import io.github.dector.krokus.Geometry
-import io.github.dector.krokus.Vector3
-import minus
-import union
-import v
+import io.github.dector.krokus.geometry.Geometry
+import io.github.dector.krokus.geometry.atPos
+import io.github.dector.krokus.geometry.minus
+import io.github.dector.krokus.geometry.unite
+import io.github.dector.krokus.vector.Vector3
+import io.github.dector.krokus.vector.v
 
 
 fun main(args: Array<String>) {
@@ -21,10 +20,7 @@ fun main(args: Array<String>) {
 private fun shell(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
     val boxSize = (cellsConfig.size.wh() + boxConfig.innerWall) * Vector2(cellsConfig.columns, cellsConfig.rows) - boxConfig.innerWall + 2 * boxConfig.outerWall
 
-    (cellsConfig.size.wh() + boxConfig.innerWall) * Vector2(cellsConfig.columns, cellsConfig.rows)
-        .log()
-
-    return cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom).log())
+    return io.github.dector.krokus.geometry.cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))
 }
 
 private fun cells(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
@@ -38,7 +34,7 @@ private fun cells(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
         }
     }
 
-    return result.union()
+    return result.unite()
 }
 
 private data class CellsConfig(
@@ -64,7 +60,7 @@ operator fun Vector2.times(other: Vector2) = Vector2(x = x * other.x, y = y * ot
 
 fun Vector2.withZ(z: Int) = Vector3(x = x.toFloat(), y = y.toFloat(), z = z.toFloat())
 
-fun cube(size: Dimen3) = cube(size.asVector())
+fun cube(size: Dimen3) = io.github.dector.krokus.geometry.cube(size.asVector())
 
 fun Dimen3.asVector() = Vector3(width.toFloat(), height.toFloat(), depth.toFloat())
 

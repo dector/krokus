@@ -3,13 +3,18 @@ package scad
 import eu.printingin3d.javascad.coords.Coords3d
 import eu.printingin3d.javascad.coords.Dims3d
 import eu.printingin3d.javascad.models.Abstract3dModel
-import eu.printingin3d.javascad.tranzitions.Translate
-import io.github.dector.krokus.*
-import io.github.dector.krokus.Operation.*
+import io.github.dector.krokus.geometry.Combined
+import io.github.dector.krokus.geometry.Cube
+import io.github.dector.krokus.geometry.Geometry
+import io.github.dector.krokus.geometry.Sphere
+import io.github.dector.krokus.operation.Operation.*
+import io.github.dector.krokus.transformation.Translate
+import io.github.dector.krokus.vector.Vector3
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Sphere as JSphere
 import eu.printingin3d.javascad.tranzitions.Difference as JDifference
 import eu.printingin3d.javascad.tranzitions.Intersection as JIntersection
+import eu.printingin3d.javascad.tranzitions.Translate as JTranslate
 import eu.printingin3d.javascad.tranzitions.Union as JUnion
 
 
@@ -21,27 +26,12 @@ class GeometryConverter {
 
     private fun unpackGeometry(g: Geometry): Abstract3dModel {
         return when (g) {
-            is PrimitiveGeometry<out Body> -> {
-                val body = g.body
-
-                when (body) {
-                    is Cube -> {
-                        if (body.centered) JCube(body.size.asDims3d())
-                        else JCube.fromCoordinates(Coords3d.ZERO, body.size.asCoords3d())
-                    }
-                    is Sphere -> JSphere(body.r.toDouble())
-                    else -> throw NotImplementedError()
-                }
+            is Cube -> {
+                if (g.centered) JCube(g.size.asDims3d())
+                else JCube.fromCoordinates(Coords3d.ZERO, g.size.asCoords3d())
             }
-            is TransformationGeometry -> {
-                val tranformation = g.transformation
-
-                when (tranformation) {
-                    is Translation -> Translate(unpackGeometry(g.geometry), tranformation.pos.asCoords3d())
-                    else -> throw NotImplementedError()
-                }
-            }
-            is CombinedGeometry -> {
+            is Sphere -> JSphere(g.r.toDouble())
+            is Combined -> {
                 val operation = g.operation
 
                 when (operation) {
@@ -53,6 +43,17 @@ class GeometryConverter {
                 }
             }
             else -> throw NotImplementedError()
+        }.let { model ->
+            var transformedModel: Abstract3dModel = model
+
+            for (t in g.transformations) {
+                transformedModel = when (t) {
+                    is Translate -> JTranslate(transformedModel, t.pos.asCoords3d())
+                    else -> throw NotImplementedError()
+                }
+            }
+
+            transformedModel
         }
     }
 

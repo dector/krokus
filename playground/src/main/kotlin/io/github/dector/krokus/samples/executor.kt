@@ -1,6 +1,6 @@
 package io.github.dector.krokus.samples
 
-import io.github.dector.krokus.Geometry
+import io.github.dector.krokus.geometry.Geometry
 import scad.GeometryConverter
 import scad.JavaScadExporter
 

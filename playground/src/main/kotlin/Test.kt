@@ -1,12 +1,8 @@
-import io.github.dector.krokus.*
-import scad.GeometryConverter
-import scad.JavaScadExporter
-import kotlin.math.min
-
+/*
 fun main(args: Array<String>) {
     val size = v(10, 20, 10)
     val geometry = (cube(size) - sphere(size.minValue()).atPos(size / 2)) +
-            size.corners.map { corner -> cube(2).centered().atPos(corner) }.union()
+            size.corners.map { corner -> cube(2).centered().atPos(corner) }.unite()
 
     export(geometry, "test.scad")
 
@@ -46,18 +42,13 @@ fun storageBox() {
             }
         }
 
-        return result.union()
+        return result.unite()
     }
 
     val geom = cube(boxSize) - cells()
 
     export(geom, "box.scad")
 }
-
-fun v(xyz: Int) = Vector3(xyz.toFloat(), xyz.toFloat(), xyz.toFloat())
-fun v(x: Int, y: Int, z: Int) = Vector3(x.toFloat(), y.toFloat(), z.toFloat())
-fun v(x: Float, y: Float, z: Float) = Vector3(x, y, z)
-fun v(x: Number, y: Number, z: Number) = Vector3(x.toFloat(), y.toFloat(), z.toFloat())
 
 fun export(g: Geometry, filename: String) {
     JavaScadExporter().exportToScad(
@@ -66,37 +57,4 @@ fun export(g: Geometry, filename: String) {
         if (exported) println("Exported model to $filename")
     }
 }
-
-fun cube(size: Vector3) = PrimitiveGeometry(Cube(size))
-fun cube(size: Int) = cube(v(size, size, size))
-
-fun sphere(radius: Float) = PrimitiveGeometry(Sphere(radius.toFloat()))
-fun sphere(radius: Int) = sphere(radius.toFloat())
-
-fun PrimitiveGeometry<Cube>.centered() = copy(body.copy(centered = true))
-
-fun Geometry.atPos(pos: Vector3) = TransformationGeometry(this, Translation(pos))
-//fun PrimitiveGeometry<T>.moveToOrigin() = TransformationGeometry(this, Translation(this.body.origin))
-
-fun List<Geometry>.union() = CombinedGeometry(Operation.Union, this)
-
-fun Vector3.minValue() = min(min(x, y), z)
-
-val Vector3.corners: List<Vector3>
-    get() = listOf(
-        v(0, 0, 0),
-        v(x, 0, 0),
-        v(x, y, 0),
-        v(x, 0, z),
-        v(x, y, z),
-        v(0, y, 0),
-        v(0, y, z),
-        v(0, 0, z)
-    )
-
-operator fun Vector3.minus(v: Vector3) = Vector3(x - v.x, y - v.y, z - v.z)
-operator fun Vector3.div(n: Int) = Vector3(x / n, y / n, z / n)
-
-operator fun Geometry.plus(other: Geometry) = CombinedGeometry(Operation.Union, listOf(this, other))
-operator fun Geometry.minus(other: Geometry) = CombinedGeometry(Operation.Difference, listOf(this, other))
-operator fun Geometry.times(other: Geometry) = CombinedGeometry(Operation.Intersection, listOf(this, other))
+*/

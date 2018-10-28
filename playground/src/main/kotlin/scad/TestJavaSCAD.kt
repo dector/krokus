@@ -1,7 +1,5 @@
 package scad
 
-import corners
-import div
 import eu.printingin3d.javascad.basic.Radius
 import eu.printingin3d.javascad.coords.Coords3d
 import eu.printingin3d.javascad.coords.Dims3d
@@ -12,9 +10,7 @@ import eu.printingin3d.javascad.tranzitions.Translate
 import eu.printingin3d.javascad.tranzitions.Union
 import eu.printingin3d.javascad.utils.SaveScadFiles
 import eu.printingin3d.javascad.vrl.export.StlTextFile
-import io.github.dector.krokus.Vector3
-import minValue
-import v
+import io.github.dector.krokus.vector.*
 import java.io.File
 
 fun main(args: Array<String>) {
