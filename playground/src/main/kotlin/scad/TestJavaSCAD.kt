@@ -12,7 +12,7 @@ import eu.printingin3d.javascad.tranzitions.Translate
 import eu.printingin3d.javascad.tranzitions.Union
 import eu.printingin3d.javascad.utils.SaveScadFiles
 import eu.printingin3d.javascad.vrl.export.StlTextFile
-import krokus.Vector3
+import io.github.dector.krokus.Vector3
 import minValue
 import v
 import java.io.File
@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
     )
 
     StlTextFile(File("test.stl")).writeToFile(geom.toCSG().toFacets())
-    SaveScadFiles(File(".")).addModel("test.scad", geom).saveScadFiles()
+    SaveScadFiles(File("")).addModel("test.scad", geom).saveScadFiles()
 }
 
 fun Cube.uncenter() = Translate(this, Coords3d(boundaries.size.x / 2, boundaries.size.y / 2, boundaries.size.z / 2))

@@ -1,4 +1,4 @@
-import krokus.*
+import io.github.dector.krokus.*
 import scad.GeometryConverter
 import scad.JavaScadExporter
 import kotlin.math.min

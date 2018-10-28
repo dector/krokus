@@ -4,8 +4,8 @@ import eu.printingin3d.javascad.coords.Coords3d
 import eu.printingin3d.javascad.coords.Dims3d
 import eu.printingin3d.javascad.models.Abstract3dModel
 import eu.printingin3d.javascad.tranzitions.Translate
-import krokus.*
-import krokus.Operation.*
+import io.github.dector.krokus.*
+import io.github.dector.krokus.Operation.*
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Sphere as JSphere
 import eu.printingin3d.javascad.tranzitions.Difference as JDifference
@@ -37,7 +37,7 @@ class GeometryConverter {
                 val tranformation = g.transformation
 
                 when (tranformation) {
-                    is Translation -> Translate(unpackGeometry(g.geometry), tranformation.pos.toCoords3d())
+                    is Translation -> Translate(unpackGeometry(g.geometry), tranformation.pos.asCoords3d())
                     else -> throw NotImplementedError()
                 }
             }

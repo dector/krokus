@@ -7,5 +7,7 @@ pluginManagement {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
 }
-rootProject.name = 'core'
 
+rootProject.name = 'krokus'
+
+include 'core', 'playground'
