@@ -1,38 +1,9 @@
 package io.github.dector.krokus.samples
 
+import io.github.dector.krokus.component.component
 import io.github.dector.krokus.geometry.*
 import io.github.dector.krokus.vector.*
 
-
-fun main(args: Array<String>) {
-    export("2parametric_box") {
-        val cellsConfig = CellsConfig(rows = 2, columns = 3, size = Dimen3(30, 25, 15))
-        val boxConfig = BoxConfig(outerWall = 1, innerWall = 1, bottom = 1)
-
-        shell(cellsConfig, boxConfig) - cells(cellsConfig, boxConfig)
-    }
-}
-
-private fun shell(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
-    val boxSize = ((cellsConfig.size.wh() + boxConfig.innerWall) scale
-            v2(cellsConfig.columns, cellsConfig.rows)) - boxConfig.innerWall + 2 * boxConfig.outerWall
-
-    return cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))
-}
-
-private fun cells(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
-    val result = mutableListOf<Geometry>()
-    (1..cellsConfig.columns).forEach { i ->
-        (1..cellsConfig.rows).forEach { j ->
-            val x = boxConfig.outerWall + (i-1) * (cellsConfig.size.width + boxConfig.innerWall)
-            val y = boxConfig.outerWall + (j-1) * (cellsConfig.size.height + boxConfig.innerWall)
-            val z = boxConfig.bottom
-            result += cube(cellsConfig.size).atPos(v(x, y, z))
-        }
-    }
-
-    return result.unite()
-}
 
 private data class CellsConfig(
     val rows: Int, val columns: Int,
@@ -43,6 +14,40 @@ private data class BoxConfig(
     val outerWall: Int, val innerWall: Int,
     val bottom: Int
 )
+
+fun main(args: Array<String>) {
+    exportComponent("2parametric_box") {
+        val cellsConfig = CellsConfig(rows = 2, columns = 3, size = Dimen3(30, 25, 15))
+        val boxConfig = BoxConfig(outerWall = 1, innerWall = 1, bottom = 1)
+
+        boxComponent(cellsConfig, boxConfig)
+    }
+}
+
+private fun boxComponent(cellsConfig: CellsConfig, boxConfig: BoxConfig) = component("StorageBox") {
+    fun shell(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
+        val boxSize = ((cellsConfig.size.wh() + boxConfig.innerWall) scale
+                v2(cellsConfig.columns, cellsConfig.rows)) - boxConfig.innerWall + 2 * boxConfig.outerWall
+
+        return cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))
+    }
+
+    fun cells(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
+        val result = mutableListOf<Geometry>()
+        (1..cellsConfig.columns).forEach { i ->
+            (1..cellsConfig.rows).forEach { j ->
+                val x = boxConfig.outerWall + (i - 1) * (cellsConfig.size.width + boxConfig.innerWall)
+                val y = boxConfig.outerWall + (j - 1) * (cellsConfig.size.height + boxConfig.innerWall)
+                val z = boxConfig.bottom
+                result += cube(cellsConfig.size).atPos(v(x, y, z))
+            }
+        }
+
+        return result.unite()
+    }
+
+    shell(cellsConfig, boxConfig) - cells(cellsConfig, boxConfig)
+}
 
 data class Dimen3(val width: Int, val height: Int, val depth: Int)
 
