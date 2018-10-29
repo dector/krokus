@@ -23,8 +23,8 @@ fun main(args: Array<String>) {
             cube(10).centered() -
                     (cylinder(10 + 1, 3).rotateX(90) +
                             cylinder(10 + 1, 3).rotateY(90)) +
-                    sphere.copy().atPos(v(0, 0, 5)) +
-                    sphere.copy().mirrorVertically().atPos(v(0, 0, -5))
+                    sphere.atPos(v(0, 0, 5)) +
+                    sphere.mirrorVertically().atPos(v(0, 0, -5))
         }
 
         val pinComponent = component(name = "pin", material = Material(Color.Azure)) {
@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
 
         val bearingComponent = component(name = "bearing", material = Material(Color.Amber)) {
             cylinder(3, 5).rotateX(90) -
-                    cylinder(3+1, 3).rotateX(90)
+                    cylinder(3 + 1, 3).rotateX(90)
         }
 
         assembly("example") {
