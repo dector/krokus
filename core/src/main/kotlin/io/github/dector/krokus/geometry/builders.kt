@@ -8,3 +8,6 @@ fun cube(size: Int) = cube(v(size, size, size))
 
 fun sphere(radius: Float) = Sphere(radius)
 fun sphere(radius: Int) = sphere(radius.toFloat())
+
+fun cylinder(height: Float, radius: Float) = Cylinder(height, radius, radius)
+fun cylinder(height: Int, radius: Int) = cylinder(height.toFloat(), radius.toFloat())

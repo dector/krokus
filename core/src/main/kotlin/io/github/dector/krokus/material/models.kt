@@ -14,6 +14,8 @@ data class Color(val value: String) {
         val Blue = Color("#0000ff")
 
         val Cardinal = Color("#c41e3a")
+        val Erin = Color("#00ff40")
         val Azure = Color("#007fff")
+        val Amber = Color("#ffbf00")
     }
 }
