@@ -1,8 +1,8 @@
-package io.github.dector.krokus.assembly
+package io.github.dector.krokus.api.assembly
 
-import io.github.dector.krokus.component.Component
-import io.github.dector.krokus.vector.Vector3
-import io.github.dector.krokus.vector.v
+import io.github.dector.krokus.api.component.Component
+import io.github.dector.krokus.api.vector.Vector3
+import io.github.dector.krokus.api.vector.xyz
 
 
 fun assembly(name: String, entriesBuilder: () -> List<Entry>) =
@@ -13,4 +13,4 @@ fun entry(component: Component, position: Vector3 = Vector3()) =
 
 fun Component.toEntry() = entry(this)
 fun Component.toEntryAt(position: Vector3) = entry(this, position)
-fun Component.toEntryAt(x: Number, y: Number, z: Number) = entry(this, v(x, y, z))
+fun Component.toEntryAt(x: Number, y: Number, z: Number) = entry(this, xyz(x, y, z))

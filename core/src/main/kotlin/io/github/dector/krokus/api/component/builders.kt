@@ -1,7 +1,7 @@
-package io.github.dector.krokus.component
+package io.github.dector.krokus.api.component
 
-import io.github.dector.krokus.geometry.Geometry
-import io.github.dector.krokus.material.Material
+import io.github.dector.krokus.api.geometry.Geometry
+import io.github.dector.krokus.api.material.Material
 
 
 fun component(name: String, geometryBuilder: () -> Geometry) =

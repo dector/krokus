@@ -1,9 +1,9 @@
 package io.github.dector.krokus.samples
 
 import eu.printingin3d.javascad.models.Abstract3dModel
-import io.github.dector.krokus.assembly.Assembly
-import io.github.dector.krokus.component.Component
-import io.github.dector.krokus.geometry.Geometry
+import io.github.dector.krokus.api.assembly.Assembly
+import io.github.dector.krokus.api.component.Component
+import io.github.dector.krokus.api.geometry.Geometry
 import io.github.dector.krokus.javascad.JavaScadAssemblyConverter
 import io.github.dector.krokus.javascad.JavaScadComponentConverter
 import io.github.dector.krokus.javascad.JavaScadExporter

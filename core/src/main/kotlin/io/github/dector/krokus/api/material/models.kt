@@ -1,4 +1,4 @@
-package io.github.dector.krokus.material
+package io.github.dector.krokus.api.material
 
 
 data class Material(val color: Color)

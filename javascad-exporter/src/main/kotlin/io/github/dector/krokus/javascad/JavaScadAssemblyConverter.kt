@@ -1,8 +1,8 @@
 package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.models.Abstract3dModel
-import io.github.dector.krokus.assembly.Assembly
-import io.github.dector.krokus.converter.AssemblyConverter
+import io.github.dector.krokus.api.assembly.Assembly
+import io.github.dector.krokus.api.converter.AssemblyConverter
 import eu.printingin3d.javascad.tranzitions.Translate as JTranslate
 import eu.printingin3d.javascad.tranzitions.Union as JUnion
 
