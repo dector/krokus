@@ -1,4 +1,4 @@
-package io.github.dector.krokus.api.geometry
+package io.github.dector.krokus.core.geometry
 
 
 //fun Geometry.rotateX(angleDeg: Float) = copyWithTransformation(Rotate(angleX = angleDeg))

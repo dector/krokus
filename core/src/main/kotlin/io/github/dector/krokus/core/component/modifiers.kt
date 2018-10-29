@@ -1,4 +1,4 @@
-package io.github.dector.krokus.api.component
+package io.github.dector.krokus.core.component
 
 
 

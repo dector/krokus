@@ -1,9 +1,9 @@
-package io.github.dector.krokus.api.geometry
+package io.github.dector.krokus.core.geometry
 
-import io.github.dector.krokus.api.operation.Difference
-import io.github.dector.krokus.api.operation.Intersection
-import io.github.dector.krokus.api.operation.Union
-import io.github.dector.krokus.api.transformation.Rotation
+import io.github.dector.krokus.core.operation.Difference
+import io.github.dector.krokus.core.operation.Intersection
+import io.github.dector.krokus.core.operation.Union
+import io.github.dector.krokus.core.transformation.Rotation
 
 operator fun Geometry.plus(other: Geometry) = union(other)
 operator fun Geometry.minus(other: Geometry) = difference(other)

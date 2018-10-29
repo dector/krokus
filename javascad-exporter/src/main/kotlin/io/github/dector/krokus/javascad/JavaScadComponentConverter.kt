@@ -2,9 +2,9 @@ package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.models.Abstract3dModel
 import eu.printingin3d.javascad.tranzitions.Colorize
-import io.github.dector.krokus.api.component.Component
-import io.github.dector.krokus.api.converter.ComponentConverter
-import io.github.dector.krokus.api.converter.GeometryConverter
+import io.github.dector.krokus.core.component.Component
+import io.github.dector.krokus.core.converter.ComponentConverter
+import io.github.dector.krokus.core.converter.GeometryConverter
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Sphere as JSphere
 import eu.printingin3d.javascad.tranzitions.Difference as JDifference

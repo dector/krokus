@@ -1,8 +1,8 @@
-package io.github.dector.krokus.api.assembly
+package io.github.dector.krokus.core.assembly
 
-import io.github.dector.krokus.api.component.Component
-import io.github.dector.krokus.api.vector.Vector3
-import io.github.dector.krokus.api.vector.xyz
+import io.github.dector.krokus.core.component.Component
+import io.github.dector.krokus.core.vector.Vector3
+import io.github.dector.krokus.core.vector.xyz
 
 
 fun assembly(name: String, entriesBuilder: () -> List<Entry>) =

@@ -5,13 +5,13 @@ import eu.printingin3d.javascad.coords.Angles3d
 import eu.printingin3d.javascad.coords.Coords3d
 import eu.printingin3d.javascad.coords.Dims3d
 import eu.printingin3d.javascad.models.Abstract3dModel
-import io.github.dector.krokus.api.converter.GeometryConverter
-import io.github.dector.krokus.api.geometry.*
-import io.github.dector.krokus.api.operation.Difference
-import io.github.dector.krokus.api.operation.Intersection
-import io.github.dector.krokus.api.operation.Union
-import io.github.dector.krokus.api.transformation.Rotation
-import io.github.dector.krokus.api.vector.Vector3
+import io.github.dector.krokus.core.converter.GeometryConverter
+import io.github.dector.krokus.core.geometry.*
+import io.github.dector.krokus.core.operation.Difference
+import io.github.dector.krokus.core.operation.Intersection
+import io.github.dector.krokus.core.operation.Union
+import io.github.dector.krokus.core.transformation.Rotation
+import io.github.dector.krokus.core.vector.Vector3
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Cylinder as JCylinder
 import eu.printingin3d.javascad.models.Sphere as JSphere

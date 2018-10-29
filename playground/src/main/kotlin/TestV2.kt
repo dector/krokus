@@ -1,6 +1,6 @@
-import io.github.dector.krokus.api.geometry.*
-import io.github.dector.krokus.api.transformation.Rotation
-import io.github.dector.krokus.api.vector.xyz
+import io.github.dector.krokus.core.geometry.*
+import io.github.dector.krokus.core.transformation.Rotation
+import io.github.dector.krokus.core.vector.xyz
 import io.github.dector.krokus.samples.exportGeometry
 
 

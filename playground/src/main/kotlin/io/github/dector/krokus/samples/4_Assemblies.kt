@@ -1,12 +1,12 @@
 //package io.github.dector.krokus.samples
 //
-//import io.github.dector.krokus.api.assembly.assembly
-//import io.github.dector.krokus.api.assembly.toEntry
-//import io.github.dector.krokus.api.assembly.toEntryAt
-//import io.github.dector.krokus.api.component.component
-//import io.github.dector.krokus.api.geometry.*
-//import io.github.dector.krokus.api.material.Color
-//import io.github.dector.krokus.api.material.Material
+//import io.github.dector.krokus.core.assembly.assembly
+//import io.github.dector.krokus.core.assembly.toEntry
+//import io.github.dector.krokus.core.assembly.toEntryAt
+//import io.github.dector.krokus.core.component.component
+//import io.github.dector.krokus.core.geometry.*
+//import io.github.dector.krokus.core.material.Color
+//import io.github.dector.krokus.core.material.Material
 //import kotlin.math.sqrt
 //
 //

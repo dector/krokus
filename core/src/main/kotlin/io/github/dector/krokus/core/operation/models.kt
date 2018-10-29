@@ -1,9 +1,9 @@
-package io.github.dector.krokus.api.operation
+package io.github.dector.krokus.core.operation
 
-import io.github.dector.krokus.api.geometry.Geometry
-import io.github.dector.krokus.api.geometry.merge
-import io.github.dector.krokus.api.transformation.Transformation
-import io.github.dector.krokus.api.transformation.Transformations
+import io.github.dector.krokus.core.geometry.Geometry
+import io.github.dector.krokus.core.geometry.merge
+import io.github.dector.krokus.core.transformation.Transformation
+import io.github.dector.krokus.core.transformation.Transformations
 
 
 interface CombinedGeometry : Geometry

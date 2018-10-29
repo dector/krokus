@@ -1,6 +1,6 @@
-package io.github.dector.krokus.api.transformation
+package io.github.dector.krokus.core.transformation
 
-import io.github.dector.krokus.api.vector.Vector3
+import io.github.dector.krokus.core.vector.Vector3
 
 
 //data class Mirror(val plane: MirrorPlane = MirrorPlane.None) : Transformation()

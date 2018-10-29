@@ -1,10 +1,10 @@
-package io.github.dector.krokus.api.geometry
+package io.github.dector.krokus.core.geometry
 
-import io.github.dector.krokus.api.transformation.Rotation
-import io.github.dector.krokus.api.transformation.Transformation
-import io.github.dector.krokus.api.transformation.Transformations
-import io.github.dector.krokus.api.transformation.Translation
-import io.github.dector.krokus.api.vector.Vector3
+import io.github.dector.krokus.core.transformation.Rotation
+import io.github.dector.krokus.core.transformation.Transformation
+import io.github.dector.krokus.core.transformation.Transformations
+import io.github.dector.krokus.core.transformation.Translation
+import io.github.dector.krokus.core.vector.Vector3
 
 
 //data class Bounds(val from: Vector3 = Vector3(), val to: Vector3 = Vector3())

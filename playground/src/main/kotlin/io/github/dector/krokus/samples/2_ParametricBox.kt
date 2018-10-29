@@ -1,8 +1,8 @@
 //package io.github.dector.krokus.samples
 //
-//import io.github.dector.krokus.api.component.component
-//import io.github.dector.krokus.api.geometry.*
-//import io.github.dector.krokus.api.vector.*
+//import io.github.dector.krokus.core.component.component
+//import io.github.dector.krokus.core.geometry.*
+//import io.github.dector.krokus.core.vector.*
 //
 //
 //private data class CellsConfig(

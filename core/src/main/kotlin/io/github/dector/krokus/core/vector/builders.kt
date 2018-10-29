@@ -1,4 +1,4 @@
-package io.github.dector.krokus.api.vector
+package io.github.dector.krokus.core.vector
 
 
 fun xyz(x: Number, y: Number, z: Number) = Vector3(x.toDouble(), y.toDouble(), z.toDouble())

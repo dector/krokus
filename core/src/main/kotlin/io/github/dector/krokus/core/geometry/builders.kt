@@ -1,7 +1,7 @@
-package io.github.dector.krokus.api.geometry
+package io.github.dector.krokus.core.geometry
 
-import io.github.dector.krokus.api.vector.Vector3
-import io.github.dector.krokus.api.vector.xyz
+import io.github.dector.krokus.core.vector.Vector3
+import io.github.dector.krokus.core.vector.xyz
 
 fun cube(size: Vector3) = ShapeGeometry(shape = Cube3(size))
 fun cube(sx: Number, sy: Number, sz: Number) = cube(xyz(sx, sy, sz))

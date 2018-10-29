@@ -1,11 +1,11 @@
 //package io.github.dector.krokus.samples
 //
-//import io.github.dector.krokus.api.component.component
-//import io.github.dector.krokus.api.geometry.centered
-//import io.github.dector.krokus.api.geometry.cube
-//import io.github.dector.krokus.api.geometry.sphere
-//import io.github.dector.krokus.api.material.Color
-//import io.github.dector.krokus.api.material.Material
+//import io.github.dector.krokus.core.component.component
+//import io.github.dector.krokus.core.geometry.centered
+//import io.github.dector.krokus.core.geometry.cube
+//import io.github.dector.krokus.core.geometry.sphere
+//import io.github.dector.krokus.core.material.Color
+//import io.github.dector.krokus.core.material.Material
 //
 //
 //private const val FileName = "3material"
