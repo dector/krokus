@@ -7,7 +7,6 @@ import io.github.dector.krokus.component.component
 import io.github.dector.krokus.geometry.*
 import io.github.dector.krokus.material.Color
 import io.github.dector.krokus.material.Material
-import io.github.dector.krokus.vector.v
 import kotlin.math.sqrt
 
 
@@ -16,15 +15,15 @@ fun main(args: Array<String>) {
 
         val baseComponent = component(name = "base", material = Material(Color.Cardinal)) {
             val sphere = (5 * sqrt(2f)).let { r ->
-                fun mask() = cube(v(10, 10, r)).centered()
+                fun mask() = cube(10, 10, r).centered()
                 sphere(r) * mask().atPosZ(r / 2)
             }
 
             cube(10).centered() -
                     (cylinder(10 + 1, 3).rotateX(90) +
                             cylinder(10 + 1, 3).rotateY(90)) +
-                    sphere.atPos(v(0, 0, 5)) +
-                    sphere.mirrorVertically().atPos(v(0, 0, -5))
+                    sphere.atPos(0, 0, 5) +
+                    sphere.mirrorVertically().atPos(0, 0, -5)
         }
 
         val pinComponent = component(name = "pin", material = Material(Color.Azure)) {
@@ -32,7 +31,7 @@ fun main(args: Array<String>) {
         }
 
         val capComponent = component(name = "cap", material = Material(Color.Erin)) {
-            cube(v(20, 3, 25)).centered() -
+            cube(20, 3, 25).centered() -
                     cylinder(3 + 1, 5).rotateX(90)
         }
 
@@ -45,10 +44,10 @@ fun main(args: Array<String>) {
             listOf(
                 baseComponent.toEntry(),
                 pinComponent.toEntry(),
-                capComponent.toEntryAt(v(0, 15, 0)),
-                capComponent.toEntryAt(v(0, -15, 0)),
-                bearingComponent.toEntryAt(v(0, -22, 0)),
-                bearingComponent.toEntryAt(v(0, 22, 0))
+                capComponent.toEntryAt(0, 15, 0),
+                capComponent.toEntryAt(0, -15, 0),
+                bearingComponent.toEntryAt(0, -22, 0),
+                bearingComponent.toEntryAt(0, 22, 0)
             )
         }
     }

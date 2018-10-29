@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
 
 private fun boxComponent(cellsConfig: CellsConfig, boxConfig: BoxConfig) = component("StorageBox") {
     fun shell(cellsConfig: CellsConfig, boxConfig: BoxConfig): Geometry {
-        val boxSize = ((cellsConfig.size.wh() + boxConfig.innerWall) scale
+        val boxSize = ((cellsConfig.size.wh() + boxConfig.innerWall) scaleEachBy
                 v2(cellsConfig.columns, cellsConfig.rows)) - boxConfig.innerWall + 2 * boxConfig.outerWall
 
         return cube(boxSize.withZ(cellsConfig.size.depth + boxConfig.bottom))

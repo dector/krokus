@@ -9,6 +9,7 @@ import io.github.dector.krokus.vector.v
 
 
 fun Geometry.atPos(pos: Vector3) = copyWithTransformation(Translate(pos))
+fun Geometry.atPos(x: Number, y: Number, z: Number) = atPos(v(x, y, z))
 
 fun Geometry.atPosZ(z: Number) = copyWithTransformation(Translate(v(0, 0, z)))
 

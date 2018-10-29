@@ -4,6 +4,7 @@ import io.github.dector.krokus.vector.Vector3
 import io.github.dector.krokus.vector.v
 
 fun cube(size: Vector3) = Cube(size)
+fun cube(dx: Number, dy: Number, dz: Number) = cube(v(dx, dy, dz))
 fun cube(size: Int) = cube(v(size, size, size))
 
 fun sphere(radius: Float) = Sphere(radius)
