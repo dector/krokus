@@ -1,37 +1,30 @@
 package io.github.dector.krokus.core.transformation
 
-import io.github.dector.krokus.core.vector.Vector3
+import io.github.dector.krokus.core.space.Angle3
+import io.github.dector.krokus.core.space.Plane
+import io.github.dector.krokus.core.space.Vector3
 
-
-//data class Mirror(val plane: MirrorPlane = MirrorPlane.None) : Transformation()
-
-enum class MirrorPlane {
-    None, X, Y, Z
-}
 
 interface Transformation
 
-data class Translation(val position: Vector3 = Vector3()) :
-    Transformation {
-
-    val isZero: Boolean
-        get() = position.isZero
-
-    val isNotZero: Boolean
-        get() = !isZero
-}
-
-data class Rotation(val angleX: Number = 0f, val angleY: Number = 0f, val angleZ: Number = 0f) :
-    Transformation {
-
-    val isZero: Boolean
-        get() = angleX == 0 && angleY == 0 && angleZ == 0
-
-    val isNotZero: Boolean
-        get() = !isZero
-}
+data class Translation(val position: Vector3 = Vector3()) : Transformation
+data class Rotation(val angle: Angle3 = Angle3()) : Transformation
+data class Mirroring(val plane: Plane = Plane.None) : Transformation
 
 data class Transformations(
     val translation: Translation = Translation(),
-    val rotation: Rotation = Rotation()
-)
+    val rotation: Rotation = Rotation(),
+    val mirroring: Mirroring = Mirroring()
+) {
+
+    val hasTranslation = translation.position.isNotZero
+    val hasRotation = rotation.angle.isNotZero
+    val hasMirroring = mirroring.plane != Plane.None
+
+    infix fun merge(transformation: Transformation) = when (transformation) {
+        is Translation -> copy(translation = transformation)
+        is Rotation -> copy(rotation = transformation)
+        is Mirroring -> copy(mirroring = transformation)
+        else -> throw NotImplementedError("Unknown transformation: $transformation")
+    }
+}

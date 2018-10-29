@@ -1,17 +1,17 @@
 package io.github.dector.krokus.javascad
 
 import eu.printingin3d.javascad.basic.Radius
-import eu.printingin3d.javascad.coords.Angles3d
-import eu.printingin3d.javascad.coords.Coords3d
-import eu.printingin3d.javascad.coords.Dims3d
 import eu.printingin3d.javascad.models.Abstract3dModel
 import io.github.dector.krokus.core.converter.GeometryConverter
 import io.github.dector.krokus.core.geometry.*
 import io.github.dector.krokus.core.operation.Difference
 import io.github.dector.krokus.core.operation.Intersection
 import io.github.dector.krokus.core.operation.Union
+import io.github.dector.krokus.core.space.Plane
+import io.github.dector.krokus.core.transformation.Mirroring
 import io.github.dector.krokus.core.transformation.Rotation
-import io.github.dector.krokus.core.vector.Vector3
+import io.github.dector.krokus.core.transformation.Transformations
+import io.github.dector.krokus.core.transformation.Translation
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Cylinder as JCylinder
 import eu.printingin3d.javascad.models.Sphere as JSphere
@@ -25,49 +25,59 @@ import eu.printingin3d.javascad.tranzitions.Union as JUnion
 
 class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
 
-    override fun convert(geometry: Geometry): Abstract3dModel {
-        return unpackGeometry(geometry)
-    }
+    override fun convert(geometry: Geometry) = resolveGeometry(geometry)
 
-    private fun unpackGeometry(g: Geometry): Abstract3dModel = when (g) {
-        is ShapeGeometry ->
-            unpackShapeGeometry(g)
-        is Union ->
-            JUnion(g.children.map(this::unpackGeometry))
-        is Difference ->
-            JDifference(unpackGeometry(g.source), g.children.map(this::unpackGeometry))
-        is Intersection ->
-            JIntersection(g.children.map(this::unpackGeometry))
-        else ->
-            throw NotImplementedError("Unknown geometry $g")
-    }.let { model ->
-        val transformations = g.transformations
+    private fun resolveGeometry(g: Geometry): Abstract3dModel = when (g) {
+        is ShapeGeometry -> unpackShapeGeometry(g)
+        is Union -> createUnion(g)
+        is Difference -> createDifference(g)
+        is Intersection -> createIntersection(g)
+        else -> throw NotImplementedError("Unknown geometry $g")
+    }.run { resolveTransformations(g.transformations) }
 
-        model.wrapIf(transformations.translation.isNotZero) {
-            JTranslate(it, transformations.translation.position.toCoords3d())
-        }.wrapIf(transformations.rotation.isNotZero) {
-            JRotate(it, transformations.rotation.toAngles3d())
-        }
-    }
+    // Operations
+
+    private fun createUnion(g: Union) = JUnion(g.children.map(this::resolveGeometry))
+    private fun createDifference(g: Difference) =
+        JDifference(resolveGeometry(g.source), g.children.map(this::resolveGeometry))
+
+    private fun createIntersection(g: Intersection) = JIntersection(g.children.map(this::resolveGeometry))
+
+    // Shapes
 
     private fun unpackShapeGeometry(g: ShapeGeometry) = g.shape.let { shape ->
         when (shape) {
-            is Cube3 -> JCube(shape.size.toDims3d())
-            is Sphere3 -> JSphere(Radius.fromRadius(shape.radius))
-            is Cylinder3 -> JCylinder(shape.height, shape.radius.first, shape.radius.second)
+            is Cube -> createCube(shape)
+            is Sphere -> createSphere(shape)
+            is Cylinder -> createCylinder(shape)
         }
+    }
+
+    private fun createCube(shape: Cube) = JCube(shape.size.asDims3d())
+    private fun createSphere(shape: Sphere) = JSphere(Radius.fromRadius(shape.radius))
+    private fun createCylinder(shape: Cylinder) = JCylinder(shape.height, shape.radius.bottom, shape.radius.top)
+
+    // Transformations
+
+    // FIXME custom transformations order is not supported yet
+    private fun Abstract3dModel.resolveTransformations(transformations: Transformations) = this
+        .wrapIf(transformations.hasRotation) {
+            createRotation(it, transformations.rotation)
+        }.wrapIf(transformations.hasMirroring) {
+            createMirroring(it, transformations.mirroring)
+        }.wrapIf(transformations.hasTranslation) {
+            createTranslation(it, transformations.translation)
+        }
+
+    private fun createTranslation(model: Abstract3dModel, translation: Translation) =
+        JTranslate(model, translation.position.toCoords3d())
+
+    private fun createRotation(model: Abstract3dModel, rotation: Rotation) = JRotate(model, rotation.angle.asAngles3d())
+    private fun createMirroring(model: Abstract3dModel, mirroring: Mirroring) = when (mirroring.plane) {
+        Plane.XY -> JMirror.mirrorZ(model)
+        Plane.XZ -> JMirror.mirrorY(model)
+        Plane.YZ -> JMirror.mirrorX(model)
+        Plane.None -> model
     }
 }
 
-private fun Abstract3dModel.wrapIf(
-    condition: Boolean,
-    converter: (Abstract3dModel) -> Abstract3dModel
-) =
-    if (condition) converter(this)
-    else this
-
-private fun Rotation.toAngles3d() =
-    Angles3d(angleX.toDouble(), angleY.toDouble(), angleZ.toDouble())
-
-fun Vector3.toDims3d() = Dims3d(x, y, z)
-fun Vector3.toCoords3d() = Coords3d(x, y, z)

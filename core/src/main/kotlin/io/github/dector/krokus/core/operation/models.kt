@@ -1,7 +1,6 @@
 package io.github.dector.krokus.core.operation
 
 import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.geometry.merge
 import io.github.dector.krokus.core.transformation.Transformation
 import io.github.dector.krokus.core.transformation.Transformations
 

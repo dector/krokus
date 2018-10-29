@@ -2,7 +2,7 @@
 fun main(args: Array<String>) {
     val size = v(10, 20, 10)
     val geometry = (cube(size) - sphere(size.minValue()).atPos(size / 2)) +
-            size.corners.map { corner -> cube(2).centered().atPos(corner) }.unite()
+            size.corners.map { corner -> cube(2).centered().atPos(corner) }.union()
 
     export(geometry, "test.scad")
 
@@ -42,7 +42,7 @@ fun storageBox() {
             }
         }
 
-        return result.unite()
+        return result.union()
     }
 
     val geom = cube(boxSize) - cells()

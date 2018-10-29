@@ -1,4 +1,4 @@
-package io.github.dector.krokus.core.vector
+package io.github.dector.krokus.core.space
 
 
 // Vector 2

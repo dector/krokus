@@ -1,4 +1,4 @@
-package io.github.dector.krokus.samples
+package io.github.dector.krokus.samples.utils
 
 import eu.printingin3d.javascad.models.Abstract3dModel
 import io.github.dector.krokus.core.assembly.Assembly
@@ -31,17 +31,26 @@ fun exportAssembly(fileName: String, assemblyBuilder: () -> Assembly) {
 }
 
 private fun export(name: String, geometry: Geometry) {
-    exportToScad(name, geometryConverter.convert(geometry))
+    exportToScad(
+        name,
+        geometryConverter.convert(geometry)
+    )
         .evaluateResult()
 }
 
 private fun export(name: String, component: Component) {
-    exportToScad(name, componentConverter.convert(component))
+    exportToScad(
+        name,
+        componentConverter.convert(component)
+    )
         .evaluateResult()
 }
 
 private fun export(name: String, assembly: Assembly) {
-    exportToScad(name, assemblyConverter.convert(assembly))
+    exportToScad(
+        name,
+        assemblyConverter.convert(assembly)
+    )
         .evaluateResult()
 }
 
