@@ -20,6 +20,8 @@ sealed class Geometry() {
 
 data class Combined(val operation: Operation, val children: List<Geometry>) : Geometry()
 
+data class Contained(val geometry: Geometry) : Geometry()
+
 sealed class Primitive : Geometry()
 data class Cube(val size: Vector3, val centered: Boolean = false) : Primitive()
 data class Sphere(val r: Float) : Primitive()
