@@ -14,6 +14,7 @@ import io.github.dector.krokus.core.transformation.Transformations
 import io.github.dector.krokus.core.transformation.Translation
 import eu.printingin3d.javascad.models.Cube as JCube
 import eu.printingin3d.javascad.models.Cylinder as JCylinder
+import eu.printingin3d.javascad.models.Prism as JPrism
 import eu.printingin3d.javascad.models.Sphere as JSphere
 import eu.printingin3d.javascad.tranzitions.Difference as JDifference
 import eu.printingin3d.javascad.tranzitions.Intersection as JIntersection
@@ -28,7 +29,7 @@ class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
     override fun convert(geometry: Geometry) = resolveGeometry(geometry)
 
     private fun resolveGeometry(g: Geometry): Abstract3dModel = when (g) {
-        is ShapeGeometry -> unpackShapeGeometry(g)
+        is ShapeGeometry<*> -> unpackShapeGeometry(g)
         is Union -> createUnion(g)
         is Difference -> createDifference(g)
         is Intersection -> createIntersection(g)
@@ -45,17 +46,19 @@ class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
 
     // Shapes
 
-    private fun unpackShapeGeometry(g: ShapeGeometry) = g.shape.let { shape ->
+    private fun unpackShapeGeometry(g: ShapeGeometry<*>) = g.shape.let { shape ->
         when (shape) {
             is Cube -> createCube(shape)
             is Sphere -> createSphere(shape)
             is Cylinder -> createCylinder(shape)
+            is Prism -> createPrism(shape)
         }
     }
 
     private fun createCube(shape: Cube) = JCube(shape.size.asDims3d())
     private fun createSphere(shape: Sphere) = JSphere(Radius.fromRadius(shape.radius))
     private fun createCylinder(shape: Cylinder) = JCylinder(shape.height, shape.radius.bottom, shape.radius.top)
+    private fun createPrism(shape: Prism) = JPrism(shape.height, shape.radius, shape.sides)
 
     // Transformations
 

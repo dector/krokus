@@ -12,3 +12,10 @@ fun sphere(radius: Number) = sphere(radius.toDouble())
 
 fun cylinder(height: Double, radius: Double) = ShapeGeometry(shape = Cylinder(height, Cylinder.Radius(radius, radius)))
 fun cylinder(height: Number, radius: Number) = cylinder(height.toDouble(), radius.toDouble())
+
+fun cylinder(height: Number, radiuses: Pair<Number, Number>) = ShapeGeometry(
+    Cylinder(
+        height = height.toDouble(),
+        radius = Cylinder.Radius(radiuses.first.toDouble(), radiuses.second.toDouble())
+    )
+)

@@ -14,3 +14,4 @@ package io.github.dector.krokus.core.geometry
 
 //fun Cube.centered() = copy(centered = true)
 
+fun ShapeGeometry<Cube>.resizeXBy(value: Number) = copy(shape = shape.copy(size = shape.size.copy(x = shape.size.x + value.toDouble())))

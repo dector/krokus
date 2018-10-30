@@ -7,10 +7,12 @@ import io.github.dector.krokus.core.transformation.Rotation
 import io.github.dector.krokus.core.transformation.Translation
 
 
-fun Geometry.moveTo(position: Vector3) = addTransformation(Translation(position))
+fun Geometry.moveTo(position: Vector3) = addTransformation(Translation(transformations.translation.position + position))
 fun Geometry.moveToX(value: Number) = moveTo(vx(value))
 fun Geometry.moveToY(value: Number) = moveTo(vy(value))
 fun Geometry.moveToZ(value: Number) = moveTo(vz(value))
+
+fun Geometry.moveByY(value: Number) = moveTo(transformations.translation.position + vy(value))
 
 fun Geometry.rotate(angle: Angle3) = addTransformation(Rotation(angle))
 fun Geometry.rotateX(angle: Number) = rotate(ax(angle))
