@@ -58,7 +58,7 @@ class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
     private fun createCube(shape: Cube) = JCube(shape.size.asDims3d())
     private fun createSphere(shape: Sphere) = JSphere(Radius.fromRadius(shape.radius))
     private fun createCylinder(shape: Cylinder) = JCylinder(shape.height, shape.radius.bottom, shape.radius.top)
-    private fun createPrism(shape: Prism) = JPrism(shape.height, shape.radius, shape.sides)
+    private fun createPrism(shape: Prism) = JPrism(shape.height, shape.radius, shape.vertices)
 
     // Transformations
 

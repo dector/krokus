@@ -12,8 +12,11 @@ data class Union(
     override val transformations: Transformations = Transformations()
 ) : CombinedGeometry {
 
-    override fun addTransformation(transformation: Transformation) =
-        copy(transformations = transformations merge transformation)
+    override fun setTransformation(transformation: Transformation) =
+        copy(transformations = transformations update transformation)
+
+//    override fun applyTransformation(transformation: Transformation) =
+//        copy(transformations = transformations merge transformation)
 }
 
 data class Difference(
@@ -22,8 +25,11 @@ data class Difference(
     override val transformations: Transformations = Transformations()
 ) : CombinedGeometry {
 
-    override fun addTransformation(transformation: Transformation) =
-        copy(transformations = transformations merge transformation)
+    override fun setTransformation(transformation: Transformation) =
+        copy(transformations = transformations update transformation)
+
+//    override fun applyTransformation(transformation: Transformation) =
+//        copy(transformations = transformations merge transformation)
 }
 
 data class Intersection(
@@ -31,6 +37,9 @@ data class Intersection(
     override val transformations: Transformations = Transformations()
 ) : CombinedGeometry {
 
-    override fun addTransformation(transformation: Transformation) =
-        copy(transformations = transformations merge transformation)
+    override fun setTransformation(transformation: Transformation) =
+        copy(transformations = transformations update transformation)
+
+//    override fun applyTransformation(transformation: Transformation) =
+//        copy(transformations = transformations merge transformation)
 }

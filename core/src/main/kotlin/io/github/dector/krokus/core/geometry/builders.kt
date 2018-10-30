@@ -19,3 +19,6 @@ fun cylinder(height: Number, radiuses: Pair<Number, Number>) = ShapeGeometry(
         radius = Cylinder.Radius(radiuses.first.toDouble(), radiuses.second.toDouble())
     )
 )
+
+fun prism(height: Number, radius: Number, vertices: Int = 3) =
+    ShapeGeometry(Prism(height = height.toDouble(), radius = radius.toDouble(), vertices = vertices))

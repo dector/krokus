@@ -11,7 +11,8 @@ import kotlin.math.max
 interface Geometry {
     val transformations: Transformations
 
-    fun addTransformation(transformation: Transformation): Geometry
+    fun setTransformation(transformation: Transformation): Geometry
+//    fun applyTransformation(transformation: Transformation): Geometry
 }
 
 data class ShapeGeometry<T : Shape>(
@@ -35,8 +36,11 @@ data class ShapeGeometry<T : Shape>(
             else -> throw NotImplementedError("$shape")
         }*/
 
-    override fun addTransformation(transformation: Transformation) =
-        copy(transformations = transformations merge transformation)
+    override fun setTransformation(transformation: Transformation) =
+        copy(transformations = transformations update transformation)
+
+//    override fun applyTransformation(transformation: Transformation) =
+//        copy(transformations = transformations merge transformation)
 }
 
 sealed class Shape
@@ -49,7 +53,7 @@ data class Cylinder(val height: Double, val radius: Radius) : Shape() { // FIXME
         fun max() = max(bottom, top)
     }
 }
-data class Prism(val height: Double, val radius: Double, val sides: Int = 3) : Shape()
+data class Prism(val height: Double, val radius: Double, val vertices: Int) : Shape()
 
 /*fun countDefaultOrigin(shape: Shape) = when (shape) {
     is Cube -> shape.size / 2

@@ -1,43 +1,53 @@
 package io.github.dector.krokus.samples
 
 import io.github.dector.krokus.api.*
+import io.github.dector.krokus.core.component.component
 import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.math.asRadius
+import io.github.dector.krokus.core.material.Color
+import io.github.dector.krokus.core.material.Material
 import io.github.dector.krokus.core.space.Plane
-import io.github.dector.krokus.samples.utils.exportGeometry
+import io.github.dector.krokus.samples.utils.exportComponent
 
 
 fun main(args: Array<String>) {
-    exportGeometry("foot_stand") {
-        val stand = cylinder(height = 3, radius = asRadius(45))
+    val config = Config()
 
-        val leg = cylinder(height = 8.5, radius = 10)
-            .moveTo(stand, Side.Bottom to Side.Top) as ShapeGeometry<Cylinder>
+    exportComponent("FootStand") { buildComponent(config) }
+}
 
-        val legCut = cylinder(height = leg.height - 2, radius = 8)
-            .moveTo(leg, Side.Top to Side.Top) as ShapeGeometry<Cylinder>
+data class Config(
+    val platformThickness: Double = 3.0,
+    val platformRadius: Double = 23.0,
+    val legHeight: Double = 8.5,
+    val legRadius: Double = 10.0,
+    val legCutThickness: Double = 2.0
+)
 
-        val legSectionCut = cube(leg.shape.radius.bottom * 2 + 1, 3, legCut.height)
-            .rotateZ(60)
-            .moveTo(legCut, Side.Bottom to Side.Bottom).let { it + it.rotateZ(-60) }    // FIXME apply relative rotation
+fun buildComponent(config: Config) = component("Foot Stand", Material(Color.Amber)) {
+    val platform = cylinder(height = config.platformThickness, radius = config.platformRadius)
 
-        val grabber = cylinder(height = 3, radiuses = leg.shape.radius.bottom + 3 to leg.shape.radius.bottom).moveTo(
-            leg,
-            Side.Top to Side.Top
-        ) * (
-                ShapeGeometry(Prism(3.0, leg.shape.radius.bottom))
-                    .rotateZ(-90)
-                    .moveByY(leg.shape.radius.bottom)
-                    .moveTo(leg, Side.Top to Side.Top).let {
-                        it + it.mirror(Plane.XZ).moveToY(-2 * leg.shape.radius.bottom)
-                    }
-                ) - legSectionCut.copy(children = legSectionCut.children.map {
-            (it as ShapeGeometry<Cube>).resizeXBy(
-                10
-            )
-        })
+    val leg = cylinder(height = config.legHeight, radius = config.legRadius)
+        .moveTo(platform, Side.Bottom to Side.Top)
 
-        stand + (leg + grabber - legCut - legSectionCut)
-    }
+    val legCut = cylinder(height = config.legHeight, radius = config.legRadius - config.legCutThickness)
+        .moveTo(leg, Side.Top to Side.Top)
+
+    val legSectionCut = cube((config.legRadius + 3) * 2 + 1, 3, config.legHeight /*- 3*/)
+        .rotateAtZ(60)
+        .moveTo(legCut, Side.Top to Side.Top)
+        .let { it + it.rotateAtZ(-60) }
+
+    val hook = cylinder(height = 3, radiuses = config.legRadius + 3 to config.legRadius)
+        .moveTo(leg, Side.Top to Side.Top) *
+            prism(3.0, config.legRadius)
+                .rotateAtZ(-90)
+                .moveTo(leg, Side.Top to Side.Top)
+                .moveByY(leg.shape.radius.bottom)
+                .withModified {
+                    it.mirror(Plane.XZ).moveByY(-2 * config.legRadius)
+                }
+                .union() - legSectionCut
+
+    platform + (leg + hook - legCut - legSectionCut)
 }
 

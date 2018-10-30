@@ -2,8 +2,8 @@ package io.github.dector.krokus.samples
 
 import io.github.dector.krokus.api.mirrorVertically
 import io.github.dector.krokus.api.moveToZ
-import io.github.dector.krokus.api.rotateX
-import io.github.dector.krokus.api.rotateY
+import io.github.dector.krokus.api.rotateAtX
+import io.github.dector.krokus.api.rotateAtY
 import io.github.dector.krokus.core.assembly.assembly
 import io.github.dector.krokus.core.assembly.toEntry
 import io.github.dector.krokus.core.assembly.toEntryAt
@@ -25,24 +25,24 @@ fun main(args: Array<String>) {
             }
 
             cube(10) -
-                    (cylinder(10 + 1, 3).rotateX(90) +
-                            cylinder(10 + 1, 3).rotateY(90)) +
+                    (cylinder(10 + 1, 3).rotateAtX(90) +
+                            cylinder(10 + 1, 3).rotateAtY(90)) +
                     sphere.moveToZ(5) +
                     sphere.moveToZ(-5).mirrorVertically()
         }
 
         val pinComponent = component(name = "pin", material = Material(Color.Azure)) {
-            cylinder(20, 2).rotateX(90)
+            cylinder(20, 2).rotateAtX(90)
         }
 
         val capComponent = component(name = "cap", material = Material(Color.Erin)) {
             cube(20, 3, 25) -
-                    cylinder(3 + 1, 5).rotateX(90)
+                    cylinder(3 + 1, 5).rotateAtX(90)
         }
 
         val bearingComponent = component(name = "bearing", material = Material(Color.Amber)) {
-            cylinder(3, 5).rotateX(90) -
-                    cylinder(3 + 1, 3).rotateX(90)
+            cylinder(3, 5).rotateAtX(90) -
+                    cylinder(3 + 1, 3).rotateAtX(90)
         }
 
         assembly("example") {

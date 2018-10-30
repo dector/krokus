@@ -21,10 +21,27 @@ data class Transformations(
     val hasRotation = rotation.angle.isNotZero
     val hasMirroring = mirroring.plane != Plane.None
 
-    infix fun merge(transformation: Transformation) = when (transformation) {
+//    infix fun merge(transformation: Transformation) = when (transformation) {
+//        is Translation -> copy(translation = applyTranslation(translation))
+//        is Rotation -> copy(rotation = applyRotation(transformation))
+//        is Mirroring -> copy(mirroring = applyMirroring(transformation))
+//        else -> throw NotImplementedError("Unknown transformation: $transformation")
+//    }
+
+    infix fun update(transformation: Transformation) = when (transformation) {
         is Translation -> copy(translation = transformation)
         is Rotation -> copy(rotation = transformation)
         is Mirroring -> copy(mirroring = transformation)
         else -> throw NotImplementedError("Unknown transformation: $transformation")
     }
+
+    /*private fun applyTranslation(another: Translation) =
+        if (hasTranslation) translation.copy(position = translation.position + another.position)
+        else another
+
+    private fun applyRotation(another: Rotation) =
+        if (hasRotation) rotation.copy(angle = rotation.angle + another.angle)
+        else another
+
+    private fun applyMirroring(another: Mirroring) = another*/
 }
