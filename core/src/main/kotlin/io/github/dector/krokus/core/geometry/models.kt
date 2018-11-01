@@ -1,18 +1,31 @@
 package io.github.dector.krokus.core.geometry
 
-import io.github.dector.krokus.core.space.Vector3
+import io.github.dector.krokus.core.space.*
 import io.github.dector.krokus.core.transformation.Transformation
 import io.github.dector.krokus.core.transformation.Transformations
+import kotlin.math.absoluteValue
 import kotlin.math.max
 
 
-//data class Bounds(val from: Vector3 = Vector3(), val to: Vector3 = Vector3())
+data class Bounds(val from: Vector3 = Vector3(), val to: Vector3 = Vector3()) {
+
+    fun side(side: Side) = when (side) {
+        Side.Front -> ((from - to) / 2).copy(y = from.y)
+        else -> throw NotImplementedError()
+    }
+
+    fun center() = (to - from) / 2
+
+    fun size() = (to - from).run { v(x.absoluteValue, y.absoluteValue, z.absoluteValue) }
+}
 
 interface Geometry {
     val transformations: Transformations
 
     fun setTransformation(transformation: Transformation): Geometry
 //    fun applyTransformation(transformation: Transformation): Geometry
+
+    fun bounds(absolute: Boolean = true): Bounds = throw NotImplementedError()
 }
 
 data class ShapeGeometry<T : Shape>(
@@ -41,6 +54,20 @@ data class ShapeGeometry<T : Shape>(
 
 //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)
+
+    override fun bounds(absolute: Boolean) = when (shape) {
+        is Cube -> {
+            val origin = if (absolute) position else Vector3.Origin
+            val halfSize = v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
+            Bounds(
+                from = origin - halfSize,
+                to = origin + halfSize
+            )
+        }
+        else -> throw NotImplementedError()
+    }
+
+    private val position = transformations.translation.position
 }
 
 sealed class Shape
@@ -53,6 +80,7 @@ data class Cylinder(val height: Double, val radius: Radius) : Shape() { // FIXME
         fun max() = max(bottom, top)
     }
 }
+
 data class Prism(val height: Double, val radius: Double, val vertices: Int) : Shape()
 
 /*fun countDefaultOrigin(shape: Shape) = when (shape) {

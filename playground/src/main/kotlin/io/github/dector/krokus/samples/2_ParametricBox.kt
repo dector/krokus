@@ -50,16 +50,16 @@ private fun boxComponent(cellsConfig: CellsConfig, boxConfig: BoxConfig) = compo
     (cube(boxSize).moveTo(boxSize / 2) - cells(cellsConfig, boxConfig))
 }
 
-data class Dimen3(val width: Int, val height: Int, val depth: Int)
+private data class Dimen3(val width: Int, val height: Int, val depth: Int)
 
-fun Dimen3.wh() = v2(width, height)
+private fun Dimen3.wh() = v2(width, height)
 
 fun v2(x: Int, y: Int) = Vector2(x.toFloat(), y.toFloat())
 
 fun Vector2.withZ(z: Int) = Vector3(x = x.toDouble(), y = y.toDouble(), z = z.toDouble())
 
-fun cube(size: Dimen3) = cube(size.asVector())
+private fun cube(size: Dimen3) = cube(size.asVector())
 
-fun Dimen3.asVector() = Vector3(width.toDouble(), height.toDouble(), depth.toDouble())
+private fun Dimen3.asVector() = Vector3(width.toDouble(), height.toDouble(), depth.toDouble())
 
 fun <T> T.log() = also { println(it) }

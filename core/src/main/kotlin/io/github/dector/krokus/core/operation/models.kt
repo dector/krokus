@@ -28,7 +28,9 @@ data class Difference(
     override fun setTransformation(transformation: Transformation) =
         copy(transformations = transformations update transformation)
 
-//    override fun applyTransformation(transformation: Transformation) =
+    override fun bounds(absolute: Boolean) = source.bounds(absolute)    // FIXME may be less
+
+    //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)
 }
 

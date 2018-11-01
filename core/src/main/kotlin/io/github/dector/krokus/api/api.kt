@@ -11,8 +11,19 @@ fun <G : Geometry> G.moveTo(position: Vector3) = setTransformation(Translation(p
 fun Geometry.moveToX(value: Number) = moveTo(vx(value))
 fun Geometry.moveToY(value: Number) = moveTo(vy(value))
 fun Geometry.moveToZ(value: Number) = moveTo(vz(value))
+fun Geometry.moveTo(x: Number = 0, y: Number = 0, z: Number = 0) = moveTo(v(x, y, z))
 
-fun Geometry.moveByY(value: Number) = moveTo(transformations.translation.position + vy(value))
+fun Geometry.moveBy(value: Vector3) =
+    moveTo(transformations.translation.position + value)
+
+fun Geometry.moveBy(x: Number = 0, y: Number = 0, z: Number = 0) =
+    moveBy(v(x, y, z))
+
+fun Geometry.moveBy(value: Number) =
+    moveBy(value, value, value)
+
+@Deprecated("", ReplaceWith("moveBy(y = value)"))
+fun Geometry.moveByY(value: Number) = moveBy(y = value)
 
 fun <G : Geometry> G.rotateAt(angle: Angle3) = setTransformation(Rotation(angle)) as G
 fun Geometry.rotateAtX(angle: Number) = rotateAt(ax(angle))

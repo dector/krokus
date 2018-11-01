@@ -1,5 +1,8 @@
 package io.github.dector.krokus.core.geometry
 
+import io.github.dector.krokus.core.space.plus
+import io.github.dector.krokus.core.space.v
+
 
 //fun Geometry.rotateAtX(angleDeg: Float) = copyWithTransformation(Rotate(x = angleDeg))
 //
@@ -15,3 +18,8 @@ package io.github.dector.krokus.core.geometry
 //fun Cube.centered() = copy(centered = true)
 
 fun ShapeGeometry<Cube>.resizeXBy(value: Number) = copy(shape = shape.copy(size = shape.size.copy(x = shape.size.x + value.toDouble())))
+
+fun ShapeGeometry<Cube>.resizeBy(x: Number = 0, y: Number = 0, z: Number = 0) =
+        copy(shape = shape.copy(size = shape.size + v(x, y, z)))
+fun ShapeGeometry<Cube>.resizeBy(value: Number): ShapeGeometry<Cube> =
+        resizeBy(value, value, value)

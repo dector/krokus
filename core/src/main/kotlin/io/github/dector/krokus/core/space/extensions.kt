@@ -1,5 +1,6 @@
 package io.github.dector.krokus.core.space
 
+import kotlin.math.absoluteValue
 import kotlin.math.min
 
 
@@ -16,3 +17,6 @@ val Vector3.corners: List<Vector3>
         v(0, y, z),
         v(0, 0, z)
     )
+
+val Vector3.absolute: Vector3
+    get() = v(x.absoluteValue, y.absoluteValue, z.absoluteValue)
