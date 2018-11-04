@@ -26,6 +26,9 @@ interface Geometry {
 //    fun applyTransformation(transformation: Transformation): Geometry
 
     fun bounds(absolute: Boolean = true): Bounds = throw NotImplementedError()
+
+    val size: Vector3
+        get() = bounds().size()
 }
 
 data class ShapeGeometry<T : Shape>(
@@ -55,16 +58,27 @@ data class ShapeGeometry<T : Shape>(
 //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)
 
-    override fun bounds(absolute: Boolean) = when (shape) {
-        is Cube -> {
-            val origin = if (absolute) position else Vector3.Origin
-            val halfSize = v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
-            Bounds(
-                from = origin - halfSize,
-                to = origin + halfSize
-            )
+    override fun bounds(absolute: Boolean): Bounds {
+        fun count(absolute: Boolean, halfSize: Vector3) =
+            (if (absolute) position else Vector3.Origin).let { origin ->
+                Bounds(
+                    from = origin - halfSize,
+                    to = origin + halfSize
+                )
+            }
+
+        return when (shape) {
+            is Cube -> {
+                val halfSize = v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
+                count(absolute, halfSize)
+            }
+            is Cylinder -> {
+                val maxRadius = shape.radius.max()
+                val halfSize = v(maxRadius, maxRadius, shape.height / 2)
+                count(absolute, halfSize)
+            }
+            else -> throw NotImplementedError()
         }
-        else -> throw NotImplementedError()
     }
 
     private val position = transformations.translation.position
