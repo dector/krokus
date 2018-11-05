@@ -17,7 +17,7 @@ import io.github.dector.krokus.samples.utils.exportAssembly
 
 
 fun main(args: Array<String>) {
-    exportAssembly("CncElectronicBox", true, ::assembly)
+    exportAssembly("CncElectronicBox", true, ::assemblyAll)
 }
 
 private val boardSize = v(90.2, 91.5, 30)
@@ -32,7 +32,7 @@ private val innerSpace = boardSize + boardOffset * 2
 private val shellSize = innerSpace + v(2 * thickness)
 private val coverSize = innerSpace.copy(z = thickness)
 
-fun assembly() = assembly("All") {
+fun assemblyAll() = assembly("All") {
     spacerEntries() +
             boxComponent().toEntry() +
             coverComponent().toEntryAt(y = -(innerSpace.y + 10))
