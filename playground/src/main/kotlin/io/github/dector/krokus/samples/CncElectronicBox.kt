@@ -22,49 +22,89 @@ fun main(args: Array<String>) {
 
 private val boardSize = v(90.2, 91.5, 30)
 private val thickness = 1.0
-private val coverSize = boardSize.copy(z = thickness)
 private val boardThickness = 1.7
 private val spacerHoleRadius = asRadius(5.2)
 private val coverHolderSize = v(thickness, 10, 1)
-private val coverHolderGap = 0.2
+private val coverHolderGap = 0.3
+private val boardOffset = v(5, 5, 0)
+
+private val innerSpace = boardSize + boardOffset * 2
+private val shellSize = innerSpace + v(2 * thickness)
+private val coverSize = innerSpace.copy(z = thickness)
 
 fun assembly() = assembly("All") {
     spacerEntries() +
             boxComponent().toEntry() +
-            coverComponent().toEntryAt(y = -(boardSize.y + 10))
+            coverComponent().toEntryAt(y = -(innerSpace.y + 10))
 }
 
 fun boxComponent() = component("box") {
-    val shell = cube(boardSize + v(thickness) * 2).uncenter()
+    fun shell() = cube(shellSize).uncenter() -
+            cube(innerSpace + v(z = thickness)).uncenter().moveBy(thickness) -
+            coverHolder(coverHolderGap)
+                .multiply(2)
+                .mapIndexed { i, cut ->
+                    when (i) {
+                        0 -> cut
+                        1 -> cut.moveBy(x = shellSize.x - cut.size.x)
+                        else -> cube()
+                    }.moveBy(
+                        y = (shellSize.y - cut.size.y) / 2,
+                        z = shellSize.z - coverHolderSize.z
+                    )
+                }.union()
 
-    shell -
-            coverHolders(applyGap = true).moveBy(x = coverHolderSize.x, z = shell.size.z - coverHolderSize.z) -
-            cube(boardSize + v(z = thickness)).uncenter().moveBy(thickness) -
-            cube(thickness, 8, 4.2 + thickness + boardThickness).uncenter().moveBy(
-                y = thickness + 28.7,
-                z = boardThickness
-            ) -
-            cube(thickness, 9.2, 11).uncenter().moveBy(y = thickness + 42, z = boardThickness) -
-            cylinder(thickness + boardThickness, spacerHoleRadius).multiply(4).mapIndexed { i, it ->
-                val offset = 3 + thickness
-                val ref = shell.size
+    fun usbCut() = cube(thickness, 8, 4).uncenter()
+        .moveBy(
+            y = thickness + 28.7,
+            z = thickness + boardThickness
+        )
 
-                val positions = mapOf(
-                    0 to v(offset, offset),
-                    1 to v(offset, ref.y - offset),
-                    2 to v(ref.x - offset, ref.y - offset),
-                    3 to v(ref.x - offset, offset)
-                )
-                it.moveBy(positions[i] ?: v())
-            }.union()
+    fun powerCut() = cube(thickness, 9, 11).uncenter()
+        .moveBy(
+            y = thickness + 42,
+            z = thickness + boardThickness
+        )
+
+    fun mountHoles() = cylinder(thickness, spacerHoleRadius)
+        .moveBy(z = thickness / 2)
+        .multiply(4)
+        .mapIndexed { i, hole ->
+            val offset = v(6, 10) + boardOffset + v(thickness)
+            val ref = v(78, 76)
+
+            val positions = mapOf(
+                0 to v(offset.x, offset.y),
+                1 to v(offset.x, offset.y + ref.y),
+                2 to v(offset.x + ref.x, offset.y + ref.y),
+                3 to v(offset.x + ref.x, offset.y)
+            )
+            hole.moveBy(positions[i] ?: v())
+        }.union()
+
+    shell() - (usbCut() + powerCut() + mountHoles())
 }
 
 fun coverComponent() = component("cover") {
     val cover = cube(coverSize).uncenter()
 
-    cover + coverHolders() - cube(25, 7, thickness)
-        .moveBy(z = cover.size.z / 2)
-        .moveBy(x = cover.size.x / 2, y = cover.size.y - 20)
+    fun coverHolders() =
+        coverHolder()
+            .multiply(2)
+            .mapIndexed { i, cut ->
+                when (i) {
+                    0 -> cut.moveBy(x = -cut.size.x)
+                    1 -> cut.moveBy(x = cover.size.x)
+                    else -> cube()
+                }.moveBy(
+                    y = (cover.size.y - cut.size.y) / 2
+                )
+            }.union()
+
+    cover + coverHolders() -
+            cube(25, 7, thickness)
+                .moveBy(z = cover.size.z / 2)
+                .moveBy(x = cover.size.x / 2, y = cover.size.y - 20)
 }
 
 fun spacerEntries(): List<Entry> {
@@ -87,13 +127,7 @@ fun spacerEntries(): List<Entry> {
     }
 }
 
-private fun coverHolders(applyGap: Boolean = false) = cube(coverHolderSize + (v(y = 2*coverHolderGap).takeIf { applyGap } ?: v()))
-    .uncenter().multiply(2).mapIndexed { i, it ->
-        when (i) {
-            0 -> it.moveBy(-it.size.x, coverSize.y / 2 - it.size.y / 2)
-            1 -> it.moveBy(coverSize.x, coverSize.y / 2 - it.size.y / 2)
-            else -> cube(0, 0, 0)
-        }
-    }.union()
+private fun coverHolder(gap: Double = 0.0) =
+    cube(coverHolderSize + v(y = 2 * gap)).uncenter()
 
 private operator fun Double.plus(number: Number) = this + number.toDouble()
