@@ -1,4 +1,4 @@
-package io.github.dector.krokus.samples
+package io.github.dector.krokus.samples.life
 
 import io.github.dector.krokus.api.moveBy
 import io.github.dector.krokus.api.multiply
@@ -40,7 +40,9 @@ fun assemblyAll() = assembly("All") {
 
 fun boxComponent() = component("box") {
     fun shell() = cube(shellSize).uncenter() -
-            cube(innerSpace + v(z = thickness)).uncenter().moveBy(thickness) -
+            cube(innerSpace + v(z = thickness)).uncenter().moveBy(
+                thickness
+            ) -
             coverHolder(coverHolderGap)
                 .multiply(2)
                 .mapIndexed { i, cut ->
@@ -66,7 +68,10 @@ fun boxComponent() = component("box") {
             z = thickness + boardThickness
         )
 
-    fun mountHoles() = cylinder(thickness, spacerHoleRadius)
+    fun mountHoles() = cylinder(
+        thickness,
+        spacerHoleRadius
+    )
         .moveBy(z = thickness / 2)
         .multiply(4)
         .mapIndexed { i, hole ->

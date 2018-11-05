@@ -1,4 +1,4 @@
-package io.github.dector.krokus.samples
+package io.github.dector.krokus.samples.life
 
 import io.github.dector.krokus.api.moveBy
 import io.github.dector.krokus.api.moveTo

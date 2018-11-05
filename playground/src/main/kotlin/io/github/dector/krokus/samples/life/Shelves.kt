@@ -1,4 +1,4 @@
-package io.github.dector.krokus.samples
+package io.github.dector.krokus.samples.life
 
 import io.github.dector.krokus.api.moveBy
 import io.github.dector.krokus.api.multiply
@@ -68,18 +68,24 @@ fun design() = component("all", Material(Color.Erin)) {
         .rotateAtZ(90)
         .moveBy(
             x = fsDepth,
-            y = demoSpace.y - (3*thickness + 2*fsWidth + ssDepth),
+            y = demoSpace.y - (3* thickness + 2* fsWidth + ssDepth),
             z = demoOffset.z
         )
 }
 
 fun first(): Geometry {
-    fun fsStands() = vPlate(topHeight, fsDepth).multiply(3, mapOf(
+    fun fsStands() = vPlate(
+        topHeight,
+        fsDepth
+    ).multiply(3, mapOf(
         1 to { it -> it.moveBy(x = thickness + fsWidth) },
         2 to { it -> it.moveBy(x = 2 * (thickness + fsWidth)) }
     )).union()
 
-    fun fsTop() = hPlate(3 * thickness + 2 * fsWidth, fsDepth)
+    fun fsTop() = hPlate(
+        3 * thickness + 2 * fsWidth,
+        fsDepth
+    )
         .moveBy(z = topHeight - thickness)
 
     fun fsShelves(): Geometry {
@@ -91,7 +97,10 @@ fun first(): Geometry {
             val atHeight = fsBottomSpace + shelfIndex * (thickness + fsHeight)
             if (atHeight >= vertSpace) break
 
-            hPlate(fsWidth, fsDepth).moveBy(
+            hPlate(
+                fsWidth,
+                fsDepth
+            ).moveBy(
                 x = thickness,
                 z = atHeight
             ).multiply(2, mapOf(
@@ -112,12 +121,18 @@ fun first(): Geometry {
 }
 
 fun second(): Geometry {
-    fun ssStands() = vPlate(topHeight, ssDepth).multiply(3, mapOf(
+    fun ssStands() = vPlate(
+        topHeight,
+        ssDepth
+    ).multiply(3, mapOf(
         1 to { it -> it.moveBy(x = thickness + ssWidth1) },
         2 to { it -> it.moveBy(x = 2 * thickness + ssWidth1 + ssWidth2) }
     )).union()
 
-    fun ssTop() = hPlate(3 * thickness + ssWidth1 + ssWidth2, ssDepth)
+    fun ssTop() = hPlate(
+        3 * thickness + ssWidth1 + ssWidth2,
+        ssDepth
+    )
         .moveBy(z = topHeight - thickness)
 
     fun ssShelves(): Geometry {
@@ -129,7 +144,10 @@ fun second(): Geometry {
             val atHeight = ssBottomSpace + shelfIndex * (thickness + ssHeight)
             if (atHeight >= vertSpace) break
 
-            hPlate(ssWidth1 + thickness + ssWidth2, ssDepth).moveBy(
+            hPlate(
+                ssWidth1 + thickness + ssWidth2,
+                ssDepth
+            ).moveBy(
                 x = thickness,
                 z = atHeight
             ).let { shelves.add(it) }
