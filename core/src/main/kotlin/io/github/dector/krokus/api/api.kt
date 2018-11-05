@@ -1,6 +1,8 @@
 package io.github.dector.krokus.api
 
+import io.github.dector.krokus.core.geometry.Cube
 import io.github.dector.krokus.core.geometry.Geometry
+import io.github.dector.krokus.core.geometry.ShapeGeometry
 import io.github.dector.krokus.core.space.*
 import io.github.dector.krokus.core.transformation.Mirroring
 import io.github.dector.krokus.core.transformation.Rotation
@@ -41,3 +43,6 @@ fun <G : Geometry> G.withModified(modifier: (G) -> G) = listOf(
     this,
     modifier(this)
 )
+
+// FIXME quickfix
+fun ShapeGeometry<Cube>.uncenter() = moveBy(shape.size / 2)

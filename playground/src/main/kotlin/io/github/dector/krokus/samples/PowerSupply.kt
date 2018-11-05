@@ -3,8 +3,8 @@ package io.github.dector.krokus.samples
 import io.github.dector.krokus.api.moveBy
 import io.github.dector.krokus.api.moveTo
 import io.github.dector.krokus.api.rotateAtX
+import io.github.dector.krokus.api.uncenter
 import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.space.div
 import io.github.dector.krokus.samples.utils.exportGeometry
 
 
@@ -91,8 +91,6 @@ fun main(args: Array<String>) {
         shell - allCuts + vitamins
     }
 }
-
-private fun ShapeGeometry<Cube>.uncenter() = moveBy(shape.size / 2)
 
 private fun converterBoard(): Geometry {
     val board = cube(51, 26, 2).uncenter()

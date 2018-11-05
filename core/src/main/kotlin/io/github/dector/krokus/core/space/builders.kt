@@ -1,7 +1,7 @@
 package io.github.dector.krokus.core.space
 
 
-fun v(x: Number, y: Number, z: Number) = Vector3(x.toDouble(), y.toDouble(), z.toDouble())
+fun v(x: Number = 0, y: Number = 0, z: Number = 0) = Vector3(x.toDouble(), y.toDouble(), z.toDouble())
 fun v(value: Number) = v(value, value, value)
 
 fun vx(value: Number) = Vector3(x = value.toDouble())

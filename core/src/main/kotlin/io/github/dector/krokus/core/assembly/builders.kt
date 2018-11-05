@@ -13,4 +13,4 @@ fun entry(component: Component, position: Vector3 = Vector3.Origin) =
 
 fun Component.toEntry() = entry(this)
 fun Component.toEntryAt(position: Vector3) = entry(this, position)
-fun Component.toEntryAt(x: Number, y: Number, z: Number) = entry(this, v(x, y, z))
+fun Component.toEntryAt(x: Number = 0, y: Number = 0, z: Number = 0) = entry(this, v(x, y, z))

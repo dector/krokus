@@ -25,9 +25,20 @@ fun exportComponent(fileName: String, componentBuilder: () -> Component) {
 }
 
 fun exportAssembly(fileName: String, assemblyBuilder: () -> Assembly) {
+    exportAssembly(fileName, false, assemblyBuilder)
+}
+
+fun exportAssembly(fileName: String, separate: Boolean = false, assemblyBuilder: () -> Assembly) {
     val assembly = assemblyBuilder()
 
-    export("${fileName}_${assembly.name}", assembly)
+    if (separate) {
+        assembly.entries.distinctBy { it.component.name }.forEachIndexed { i, entry ->
+            val name = "${fileName}_${assembly.name}_${entry.component.name}"
+            export(name, entry.component)
+        }
+    } else {
+        export("${fileName}_${assembly.name}", assembly)
+    }
 }
 
 private fun export(name: String, geometry: Geometry) {
@@ -55,8 +66,12 @@ private fun export(name: String, assembly: Assembly) {
 }
 
 private fun exportToScad(name: String, model: Abstract3dModel): Boolean {
+    val fileName = "samples/$name.scad"
+
+    println("Writing \"$fileName\"")
+
     return JavaScadExporter()
-        .exportToScad(model, "samples/$name.scad")
+        .exportToScad(model, fileName)
 }
 
 private fun Boolean.evaluateResult() {
