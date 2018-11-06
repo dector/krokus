@@ -11,6 +11,7 @@ data class Vector3(val x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0
 
     val isZero = x == 0.0 && y == 0.0 && z == 0.0
     val isNotZero = !isZero
+    val allAreEqual = x == y && x == z
 }
 
 data class Angle3(val x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0) {

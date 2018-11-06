@@ -85,7 +85,12 @@ data class ShapeGeometry<T : Shape>(
 }
 
 sealed class Shape
-data class Cube(val size: Vector3) : Shape()
+data class Cube(val size: Vector3, val origin: Origin = Cube.Origin.Center) : Shape() {
+
+    enum class Origin {
+        Center, Corner
+    }
+}
 data class Sphere(val radius: Double) : Shape()
 data class Cylinder(val height: Double, val radius: Radius) : Shape() { // FIXME make cone
 
