@@ -1,11 +1,11 @@
 package io.github.dector.krokus.openscad
 
 import io.github.dector.krokus.core.converter.GeometryConverter
-import io.github.dector.krokus.core.geometry.Cube
-import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.geometry.ShapeGeometry
+import io.github.dector.krokus.core.geometry.*
+import io.github.dector.krokus.core.operation.Difference
+import io.github.dector.krokus.core.operation.Intersection
+import io.github.dector.krokus.core.operation.Union
 import io.github.dector.krokus.core.space.Vector3
-import io.github.dector.krokus.core.space.v
 import java.io.File
 
 
@@ -23,19 +23,25 @@ class OpenScadExporter {
 
 class OpenScadConverter : GeometryConverter<String> {
 
-    override fun convert(geometry: Geometry) = when (geometry) {
+    override fun convert(geometry: Geometry): String = when (geometry) {
         is ShapeGeometry<*> -> {
             val shape = geometry.shape
 
             when (shape) {
-                is Cube -> convert(shape)
+                is Cube -> convertCube(shape)
+                is Sphere -> convertSphere(shape)
+                is Cylinder -> convertCylinder(shape)
+                is Cone -> convertCone(shape)
                 else -> throw notImplemented(shape)
             }
         }
+        is Union -> convertUnion(geometry)
+        is Difference -> convertDifference(geometry)
+        is Intersection -> convertIntersection(geometry)
         else -> throw notImplemented(geometry)
     }
 
-    private fun convert(cube: Cube) = buildString {
+    private fun convertCube(cube: Cube) = buildString {
         append("cube(")
         append(cube.size.toString(canBeSimplified = true))
 
@@ -48,6 +54,69 @@ class OpenScadConverter : GeometryConverter<String> {
 
         append(");")
     }
+
+    private fun convertCylinder(cylinder: Cylinder) = buildString {
+        append("cylinder(")
+        append("h = ").append(cylinder.height)
+        append(", r = ").append(cylinder.radius)
+
+        when (cylinder.origin) {
+            Cylinder.Origin.Bottom -> {
+                /* do nothing */
+            }
+            Cylinder.Origin.Center -> append(", center = true")
+        }
+
+        append(");")
+    }
+
+    private fun convertCone(cone: Cone) = buildString {
+        append("cylinder(")
+        append("h = ").append(cone.height)
+        append(", r1 = ").append(cone.radiusBottom)
+        append(", r2 = ").append(cone.radiusTop)
+
+        when (cone.origin) {
+            Cone.Origin.Bottom -> {
+                /* do nothing */
+            }
+            Cone.Origin.Center -> append(", center = true")
+        }
+
+        append(");")
+    }
+
+    private fun convertSphere(sphere: Sphere) = buildString {
+        append("sphere(r = ")
+        append(sphere.radius)
+        append(");")
+    }
+
+    private fun convertUnion(union: Union) = buildString {
+        append("union() {")
+        union.children.joinAllTo(this)
+        append("}")
+    }
+
+    private fun convertDifference(difference: Difference) = buildString {
+        append("difference(){\n")
+        append(convert(difference.source))
+
+        difference.children.joinAllTo(this)
+
+        append("}")
+    }
+
+    private fun convertIntersection(intersection: Intersection) = buildString {
+        append("intersection() {")
+
+        intersection.children.joinAllTo(this)
+
+        append("}")
+    }
+
+    private fun List<Geometry>.joinAllTo(sb: StringBuilder) =
+        this.joinTo(sb, separator = "\n", prefix = "\n", postfix = "\n", transform = ::convert)
 
     private fun Vector3.toString(canBeSimplified: Boolean = false) =
         if (canBeSimplified && allAreEqual) x.toString()
@@ -103,9 +172,27 @@ fun main(args: Array<String>) {
         }
     }
 
-    export(
-        ShapeGeometry(Cube(size = v(10), origin = Cube.Origin.Center)),
-        ShapeGeometry(Cube(size = v(10), origin = Cube.Origin.Corner)),
-        ShapeGeometry(Cube(size = v(10)))
+    fun clip(vararg geometry: Geometry) {
+        val scad = OpenScadConverter().convert(geometry.last())
+        ProcessBuilder("sh", "-c", "echo '$scad' | xclip -selection clipboard")
+            .start().waitFor()
+    }
+
+//    export(
+    clip(
+        cube(10),
+        cube(10).cornerOrigin(),
+        cylinder(10, 5),
+        cylinder(10, 5).bottomOrigin(),
+        sphere(10),
+        cube(10) + sphere(7),
+        cube(10).cornerOrigin() + sphere(7),
+        cube(10) - sphere(7),
+        cube(10).cornerOrigin() - sphere(7),
+        cube(10) * sphere(7),
+        cube(10).cornerOrigin() * sphere(7),
+        cone(10, 10, 5),
+        cone(10, 10, 5).bottomOriginCone(),
+        cube(8) - (cube(10) + sphere(7))
     )
 }

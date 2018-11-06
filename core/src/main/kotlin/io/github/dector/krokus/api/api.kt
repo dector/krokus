@@ -44,5 +44,5 @@ fun <G : Geometry> G.withModified(modifier: (G) -> G) = listOf(
     modifier(this)
 )
 
-// FIXME quickfix
+@Deprecated("Use new api", ReplaceWith("cornerOrigin()"))
 fun ShapeGeometry<Cube>.uncenter() = moveBy(shape.size / 2)

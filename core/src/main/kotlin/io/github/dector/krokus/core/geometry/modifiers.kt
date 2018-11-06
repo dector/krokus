@@ -23,3 +23,13 @@ fun ShapeGeometry<Cube>.resizeBy(x: Number = 0, y: Number = 0, z: Number = 0) =
         copy(shape = shape.copy(size = shape.size + v(x, y, z)))
 fun ShapeGeometry<Cube>.resizeBy(value: Number): ShapeGeometry<Cube> =
         resizeBy(value, value, value)
+
+fun ShapeGeometry<Cube>.cornerOrigin() =
+        copy(shape = shape.copy(origin = Cube.Origin.Corner))
+
+fun ShapeGeometry<Cylinder>.bottomOrigin() =
+        copy(shape = shape.copy(origin = Cylinder.Origin.Bottom))
+
+// TODO resolve platform clash
+fun ShapeGeometry<Cone>.bottomOriginCone() =
+        copy(shape = shape.copy(origin = Cone.Origin.Bottom))

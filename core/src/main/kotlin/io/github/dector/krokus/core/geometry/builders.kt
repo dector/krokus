@@ -10,15 +10,19 @@ fun cube(size: Number) = cube(size, size, size)
 fun sphere(radius: Double) = ShapeGeometry(shape = Sphere(radius = radius))
 fun sphere(radius: Number) = sphere(radius.toDouble())
 
-fun cylinder(height: Double, radius: Double) = ShapeGeometry(shape = Cylinder(height, Cylinder.Radius(radius, radius)))
+fun cylinder(height: Double, radius: Double) = ShapeGeometry(shape = Cylinder(height, radius))
 fun cylinder(height: Number, radius: Number) = cylinder(height.toDouble(), radius.toDouble())
 
+@Deprecated("Use cone", ReplaceWith("cone(height, radiuses.first, radiuses.second)"))
 fun cylinder(height: Number, radiuses: Pair<Number, Number>) = ShapeGeometry(
-    Cylinder(
+    CylinderDep(
         height = height.toDouble(),
-        radius = Cylinder.Radius(radiuses.first.toDouble(), radiuses.second.toDouble())
+        radius = CylinderDep.Radius(radiuses.first.toDouble(), radiuses.second.toDouble())
     )
 )
+
+fun cone(height: Number, radiusBottom: Number, radiusTop: Number = radiusBottom) =
+    ShapeGeometry(Cone(height = height.toDouble(), radiusBottom = radiusBottom.toDouble(), radiusTop = radiusTop.toDouble()))
 
 fun prism(height: Number, radius: Number, vertices: Int = 3) =
     ShapeGeometry(Prism(height = height.toDouble(), radius = radius.toDouble(), vertices = vertices))

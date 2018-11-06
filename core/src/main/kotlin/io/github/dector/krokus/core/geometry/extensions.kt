@@ -8,7 +8,7 @@ import io.github.dector.krokus.core.space.vz
 
 fun Geometry.findSide(side: Side, applyTranslation: Boolean = true) = when (this) {
     is ShapeGeometry<*> -> when (shape) {
-        is Cylinder -> when (side) {
+        is CylinderDep -> when (side) {
             Side.Top -> fromPosition(vz(shape.height / 2), applyTranslation)
             Side.Bottom -> fromPosition(vz(-shape.height / 2), applyTranslation)
             else -> throw NotImplementedError()
@@ -36,5 +36,5 @@ enum class Side {
     Top, Bottom, Left, Front
 }
 
-val ShapeGeometry<Cylinder>.height: Double
+val ShapeGeometry<CylinderDep>.height: Double
     get() = shape.height

@@ -40,7 +40,7 @@ data class ShapeGeometry<T : Shape>(
         get() = when (shape) {
             is Cube -> origin + shape.size / 2
             is Sphere -> origin + vz(shape.radius)
-            is Cylinder -> origin + vz(shape.height / 2)
+            is CylinderDep -> origin + vz(shape.height / 2)
             else -> throw NotImplementedError("$shape")
         }
 
@@ -48,7 +48,7 @@ data class ShapeGeometry<T : Shape>(
         get() = when (shape) {
 //            is Cube -> origin + shape.size / 2
 //            is Sphere -> origin + vz(shape.radius)
-            is Cylinder -> origin - vz(shape.height / 2)
+            is CylinderDep -> origin - vz(shape.height / 2)
             else -> throw NotImplementedError("$shape")
         }*/
 
@@ -72,7 +72,7 @@ data class ShapeGeometry<T : Shape>(
                 val halfSize = v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
                 count(absolute, halfSize)
             }
-            is Cylinder -> {
+            is CylinderDep -> {
                 val maxRadius = shape.radius.max()
                 val halfSize = v(maxRadius, maxRadius, shape.height / 2)
                 count(absolute, halfSize)
@@ -85,18 +85,49 @@ data class ShapeGeometry<T : Shape>(
 }
 
 sealed class Shape
-data class Cube(val size: Vector3, val origin: Origin = Cube.Origin.Center) : Shape() {
+data class Cube(
+    val size: Vector3,
+    val origin: Origin = Cube.Origin.Center
+) : Shape() {
 
     enum class Origin {
         Center, Corner
     }
 }
-data class Sphere(val radius: Double) : Shape()
-data class Cylinder(val height: Double, val radius: Radius) : Shape() { // FIXME make cone
+
+data class Sphere(
+    val radius: Double
+) : Shape()
+
+@Deprecated("Use new one", ReplaceWith("Cylinder"))
+data class CylinderDep(val height: Double, val radius: Radius) : Shape() { // FIXME make cone
 
     data class Radius(val bottom: Double, val top: Double) {
 
         fun max() = max(bottom, top)
+    }
+}
+
+data class Cylinder(
+    val height: Double,
+    val radius: Double,
+    val origin: Cylinder.Origin = Origin.Center
+) : Shape() {
+
+    enum class Origin {
+        Center, Bottom
+    }
+}
+
+data class Cone(
+    val height: Double,
+    val radiusBottom: Double,
+    val radiusTop: Double,
+    val origin: Cone.Origin = Origin.Center
+) : Shape() {
+
+    enum class Origin {
+        Center, Bottom
     }
 }
 
@@ -105,7 +136,7 @@ data class Prism(val height: Double, val radius: Double, val vertices: Int) : Sh
 /*fun countDefaultOrigin(shape: Shape) = when (shape) {
     is Cube -> shape.size / 2
     is Sphere -> v(shape.radius)
-    is Cylinder -> v(shape.radius.max()).copy(z = shape.height / 2)
+    is CylinderDep -> v(shape.radius.max()).copy(z = shape.height / 2)
     else -> throw NotImplementedError("$shape")
 }*/
 
