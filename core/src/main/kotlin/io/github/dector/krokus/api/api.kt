@@ -13,6 +13,7 @@ fun <G : Geometry> G.moveTo(position: Vector3) = setTransformation(Translation(p
 fun Geometry.moveToX(value: Number) = moveTo(vx(value))
 fun Geometry.moveToY(value: Number) = moveTo(vy(value))
 fun Geometry.moveToZ(value: Number) = moveTo(vz(value))
+fun Geometry.moveTo(xyz: Number) = moveTo(xyz, xyz, xyz)
 fun Geometry.moveTo(x: Number = 0, y: Number = 0, z: Number = 0) = moveTo(v(x, y, z))
 
 fun Geometry.moveBy(value: Vector3) =

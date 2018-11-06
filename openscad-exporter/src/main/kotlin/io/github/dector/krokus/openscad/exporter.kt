@@ -1,11 +1,18 @@
 package io.github.dector.krokus.openscad
 
+import io.github.dector.krokus.api.mirrorVertically
+import io.github.dector.krokus.api.moveTo
+import io.github.dector.krokus.api.rotateAtY
 import io.github.dector.krokus.core.converter.GeometryConverter
 import io.github.dector.krokus.core.geometry.*
 import io.github.dector.krokus.core.operation.Difference
 import io.github.dector.krokus.core.operation.Intersection
 import io.github.dector.krokus.core.operation.Union
+import io.github.dector.krokus.core.space.Angle3
+import io.github.dector.krokus.core.space.Plane
 import io.github.dector.krokus.core.space.Vector3
+import io.github.dector.krokus.core.transformation.Mirroring
+import io.github.dector.krokus.core.transformation.Transformations
 import java.io.File
 
 
@@ -23,7 +30,30 @@ class OpenScadExporter {
 
 class OpenScadConverter : GeometryConverter<String> {
 
-    override fun convert(geometry: Geometry): String = when (geometry) {
+    override fun convert(geometry: Geometry): String =
+        convertTransformations(geometry.transformations) + convertGeometry(geometry)
+
+    private fun convertTransformations(transformations: Transformations) = buildString {
+        if (transformations.hasTranslation) {
+            append("translate(")
+            append(transformations.translation.position.asString())
+            append(") ")
+        }
+
+        if (transformations.hasMirroring) {
+            append("mirror(")
+            append(transformations.mirroring.asString())
+            append(") ")
+        }
+
+        if (transformations.hasRotation) {
+            append("rotate(")
+            append(transformations.rotation.angle.asString())
+            append(") ")
+        }
+    }
+
+    private fun convertGeometry(geometry: Geometry) = when (geometry) {
         is ShapeGeometry<*> -> {
             val shape = geometry.shape
 
@@ -43,7 +73,7 @@ class OpenScadConverter : GeometryConverter<String> {
 
     private fun convertCube(cube: Cube) = buildString {
         append("cube(")
-        append(cube.size.toString(canBeSimplified = true))
+        append(cube.size.asString(canBeSimplified = true))
 
         when (cube.origin) {
             Cube.Origin.Corner -> {
@@ -118,9 +148,18 @@ class OpenScadConverter : GeometryConverter<String> {
     private fun List<Geometry>.joinAllTo(sb: StringBuilder) =
         this.joinTo(sb, separator = "\n", prefix = "\n", postfix = "\n", transform = ::convert)
 
-    private fun Vector3.toString(canBeSimplified: Boolean = false) =
+    private fun Vector3.asString(canBeSimplified: Boolean = false) =
         if (canBeSimplified && allAreEqual) x.toString()
         else "[$x, $y, $z]"
+
+    private fun Angle3.asString() = "[$x, $y, $z]"
+
+    private fun Mirroring.asString() = when (plane) {
+        Plane.None -> ""
+        Plane.XY -> "[0, 0, 1]"
+        Plane.XZ -> "[0, 1, 0]"
+        Plane.YZ -> "[1, 0, 0]"
+    }
 }
 
 fun main(args: Array<String>) {
@@ -193,6 +232,7 @@ fun main(args: Array<String>) {
         cube(10).cornerOrigin() * sphere(7),
         cone(10, 10, 5),
         cone(10, 10, 5).bottomOriginCone(),
-        cube(8) - (cube(10) + sphere(7))
+        cube(8) - (cube(10) + sphere(7)),
+        cone(10, 5, 0).bottomOriginCone().mirrorVertically().rotateAtY(30).moveTo(10)
     )
 }
