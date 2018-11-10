@@ -11,24 +11,26 @@ import io.github.dector.krokus.core.component.component
 import io.github.dector.krokus.core.geometry.*
 import io.github.dector.krokus.core.math.asRadius
 import io.github.dector.krokus.core.space.plus
-import io.github.dector.krokus.core.space.times
 import io.github.dector.krokus.core.space.v
-import io.github.dector.krokus.samples.utils.exportAssembly
+import io.github.dector.krokus.samples.utils.exportToOpenScad
 
 
 fun main(args: Array<String>) {
-    exportAssembly("CncElectronicBox", true, ::assemblyAll)
+    assemblyAll().entries.map { it.component }.distinctBy { it::name }.forEach {
+        exportToOpenScad("CncElectronicBox_${it.name}", it.geometry)
+    }
+//    exportAssembly("CncElectronicBox", true, ::assemblyAll)
 }
 
 private val boardSize = v(90.2, 91.5, 30)
 private val thickness = 1.0
-private val boardThickness = 1.7
+private val boardThickness = 1.7 + 5
 private val spacerHoleRadius = asRadius(5.2)
 private val coverHolderSize = v(thickness, 10, 1)
 private val coverHolderGap = 0.3
-private val boardOffset = v(5, 5, 0)
+private val boardOffset = v(0, 3, 0)
 
-private val innerSpace = boardSize + boardOffset * 2
+private val innerSpace = boardSize + boardOffset + v(x = boardOffset.y, y = boardOffset.y)
 private val shellSize = innerSpace + v(2 * thickness)
 private val coverSize = innerSpace.copy(z = thickness)
 
@@ -56,17 +58,17 @@ fun boxComponent() = component("box") {
                     )
                 }.union()
 
-    fun usbCut() = cube(thickness, 8, 4).uncenter()
+    fun usbCut() = cube(thickness, 8 + 0.3, 4 + 0.3).uncenter()
         .moveBy(
-            y = thickness + 28.7,
+            y = thickness + 29,
             z = thickness + boardThickness
-        )
+        ).moveBy(y = boardOffset.y)
 
     fun powerCut() = cube(thickness, 9, 11).uncenter()
         .moveBy(
             y = thickness + 42,
             z = thickness + boardThickness
-        )
+        ).moveBy(y = boardOffset.y)
 
     fun mountHoles() = cylinder(
         thickness,

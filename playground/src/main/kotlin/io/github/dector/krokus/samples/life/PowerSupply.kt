@@ -58,8 +58,8 @@ fun main(args: Array<String>) {
         val outputCut = cylinder(thickness, radius = 5).run {
             val ref = shell.bounds()
             moveBy(
-                x = 2 * shape.radius.bottom,//ref.size().x / 5,
-                y = ref.size().y - 2 * shape.radius.bottom,//ref.size().y / 5
+                x = 2 * shape.radius,//ref.size().x / 5,
+                y = ref.size().y - 2 * shape.radius,//ref.size().y / 5
                 z = shape.height / 2
             )
         }
@@ -67,8 +67,8 @@ fun main(args: Array<String>) {
         val inputCut = cylinder(thickness, radius = 5).run {
             val ref = shell.bounds()
             moveBy(
-                x = ref.size().x - 2 * shape.radius.bottom,
-                y = ref.size().y - 2 * shape.radius.bottom,
+                x = ref.size().x - 2 * shape.radius,
+                y = ref.size().y - 2 * shape.radius,
                 z = ref.size().z - shape.height / 2
             )
         }

@@ -72,12 +72,16 @@ data class ShapeGeometry<T : Shape>(
                 val halfSize = v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
                 count(absolute, halfSize)
             }
+            is Cylinder -> {
+                val halfSize = v(shape.radius, shape.radius, shape.height / 2)
+                count(absolute, halfSize)
+            }
             is CylinderDep -> {
                 val maxRadius = shape.radius.max()
                 val halfSize = v(maxRadius, maxRadius, shape.height / 2)
                 count(absolute, halfSize)
             }
-            else -> throw NotImplementedError()
+            else -> throw NotImplementedError("$shape")
         }
     }
 

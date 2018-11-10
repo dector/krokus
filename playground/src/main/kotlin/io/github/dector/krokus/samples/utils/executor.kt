@@ -8,6 +8,8 @@ import io.github.dector.krokus.javascad.JavaScadAssemblyConverter
 import io.github.dector.krokus.javascad.JavaScadComponentConverter
 import io.github.dector.krokus.javascad.JavaScadExporter
 import io.github.dector.krokus.javascad.JavaScadGeometryConverter
+import io.github.dector.krokus.openscad.OpenScadExporter
+import java.io.File
 
 
 private val geometryConverter = JavaScadGeometryConverter()
@@ -72,6 +74,16 @@ private fun exportToScad(name: String, model: Abstract3dModel): Boolean {
 
     return JavaScadExporter()
         .exportToScad(model, fileName)
+}
+
+fun exportToOpenScad(name: String, geometry: Geometry) {
+    val fileName = "samples/$name.scad"
+
+    println("Writing \"$fileName\"")
+
+    return OpenScadExporter()
+        .export(geometry, File(fileName))
+        .evaluateResult()
 }
 
 private fun Boolean.evaluateResult() {

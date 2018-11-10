@@ -42,7 +42,7 @@ fun buildComponent(config: Config) = component("Foot Stand", Material(Color.Ambe
             prism(3.0, config.legRadius)
                 .rotateAtZ(-90)
                 .moveTo(leg, Side.Top to Side.Top)
-                .moveByY(leg.shape.radius.bottom)
+                .moveByY(leg.shape.radius)
                 .withModified {
                     it.mirror(Plane.XZ).moveByY(-2 * config.legRadius)
                 }

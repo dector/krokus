@@ -18,13 +18,15 @@ import java.io.File
 
 class OpenScadExporter {
 
-    fun export(geometry: Geometry, file: File) {
+    fun export(geometry: Geometry, file: File): Boolean {
         val source = OpenScadConverter().convert(geometry)
 
         file.bufferedWriter().apply {
             write(source)
             flush()
         }
+
+        return true
     }
 }
 

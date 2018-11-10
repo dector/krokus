@@ -52,6 +52,7 @@ class JavaScadGeometryConverter : GeometryConverter<Abstract3dModel> {
             is Sphere -> createSphere(shape)
             is CylinderDep -> createCylinder(shape)
             is Prism -> createPrism(shape)
+            else -> throw NotImplementedError("$shape")
         }
     }
 
