@@ -3,164 +3,49 @@ package io.github.dector.krokus.openscad
 import io.github.dector.krokus.api.mirrorVertically
 import io.github.dector.krokus.api.moveTo
 import io.github.dector.krokus.api.rotateAtY
-import io.github.dector.krokus.core.converter.GeometryConverter
+import io.github.dector.krokus.core.assembly.Assembly
+import io.github.dector.krokus.core.component.Component
 import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.operation.Difference
-import io.github.dector.krokus.core.operation.Intersection
-import io.github.dector.krokus.core.operation.Union
-import io.github.dector.krokus.core.space.Angle3
-import io.github.dector.krokus.core.space.Plane
-import io.github.dector.krokus.core.space.Vector3
-import io.github.dector.krokus.core.transformation.Mirroring
-import io.github.dector.krokus.core.transformation.Transformations
 import java.io.File
 
 
 class OpenScadExporter {
 
-    fun export(geometry: Geometry, file: File): Boolean {
-        val source = OpenScadConverter().convert(geometry)
+    private val builder by lazy { OpenScadBuilder() }
+    private val geometryConverter by lazy { OpenScadGeometryConverter(builder) }
+    private val componentConverter by lazy { OpenScadComponentConverter(builder, geometryConverter) }
+    private val assemblyConverter by lazy { OpenScadAssemblyConverter(builder, componentConverter) }
 
-        file.bufferedWriter().apply {
-            write(source)
-            flush()
-        }
+    fun export(geometry: Geometry, file: File): Boolean {
+        file.writeAndClose(
+            geometryConverter.convert(geometry)
+        )
 
         return true
     }
-}
 
-class OpenScadConverter : GeometryConverter<String> {
+    fun export(component: Component, file: File): Boolean {
+        file.writeAndClose(
+            componentConverter.convert(component)
+        )
 
-    override fun convert(geometry: Geometry): String =
-        convertTransformations(geometry.transformations) + convertGeometry(geometry)
+        return true
+    }
 
-    private fun convertTransformations(transformations: Transformations) = buildString {
-        if (transformations.hasTranslation) {
-            append("translate(")
-            append(transformations.translation.position.asString())
-            append(") ")
+    fun export(assembly: Assembly, file: File): Boolean {
+        file.writeAndClose(
+            assemblyConverter.convert(assembly)
+        )
+
+        return true
+    }
+
+    private fun File.writeAndClose(s: String) {
+        this.bufferedWriter().apply {
+            write(s)
+            flush()
+            close()
         }
-
-        if (transformations.hasMirroring) {
-            append("mirror(")
-            append(transformations.mirroring.asString())
-            append(") ")
-        }
-
-        if (transformations.hasRotation) {
-            append("rotate(")
-            append(transformations.rotation.angle.asString())
-            append(") ")
-        }
-    }
-
-    private fun convertGeometry(geometry: Geometry) = when (geometry) {
-        is ShapeGeometry<*> -> {
-            val shape = geometry.shape
-
-            when (shape) {
-                is Cube -> convertCube(shape)
-                is Sphere -> convertSphere(shape)
-                is Cylinder -> convertCylinder(shape)
-                is Cone -> convertCone(shape)
-                else -> throw notImplemented(shape)
-            }
-        }
-        is Union -> convertUnion(geometry)
-        is Difference -> convertDifference(geometry)
-        is Intersection -> convertIntersection(geometry)
-        else -> throw notImplemented(geometry)
-    }
-
-    private fun convertCube(cube: Cube) = buildString {
-        append("cube(")
-        append(cube.size.asString(canBeSimplified = true))
-
-        when (cube.origin) {
-            Cube.Origin.Corner -> {
-                /* do nothing */
-            }
-            Cube.Origin.Center -> append(", center = true")
-        }
-
-        append(");")
-    }
-
-    private fun convertCylinder(cylinder: Cylinder) = buildString {
-        append("cylinder(")
-        append("h = ").append(cylinder.height)
-        append(", r = ").append(cylinder.radius)
-
-        when (cylinder.origin) {
-            Cylinder.Origin.Bottom -> {
-                /* do nothing */
-            }
-            Cylinder.Origin.Center -> append(", center = true")
-        }
-
-        append(");")
-    }
-
-    private fun convertCone(cone: Cone) = buildString {
-        append("cylinder(")
-        append("h = ").append(cone.height)
-        append(", r1 = ").append(cone.radiusBottom)
-        append(", r2 = ").append(cone.radiusTop)
-
-        when (cone.origin) {
-            Cone.Origin.Bottom -> {
-                /* do nothing */
-            }
-            Cone.Origin.Center -> append(", center = true")
-        }
-
-        append(");")
-    }
-
-    private fun convertSphere(sphere: Sphere) = buildString {
-        append("sphere(r = ")
-        append(sphere.radius)
-        append(");")
-    }
-
-    private fun convertUnion(union: Union) = buildString {
-        append("union() {")
-        union.children.joinAllTo(this)
-        append("}")
-    }
-
-    private fun convertDifference(difference: Difference) = buildString {
-        append("difference(){\n")
-        append(convert(difference.source))
-
-        difference.children.joinAllTo(this)
-
-        append("}")
-    }
-
-    private fun convertIntersection(intersection: Intersection) = buildString {
-        append("intersection() {")
-
-        intersection.children.joinAllTo(this)
-
-        append("}")
-    }
-
-    private fun List<Geometry>.joinAllTo(sb: StringBuilder) =
-        this.joinTo(sb, separator = "\n", prefix = "\n", postfix = "\n", transform = ::convert)
-
-    private fun Vector3.asString(canBeSimplified: Boolean = false) =
-        if (canBeSimplified && allAreEqual) x.toString()
-        else "[$x, $y, $z]"
-
-    private fun Angle3.asString() = "[$x, $y, $z]"
-
-    private fun Mirroring.asString() = when (plane) {
-        Plane.None -> ""
-        Plane.XY -> "[0, 0, 1]"
-        Plane.XZ -> "[0, 1, 0]"
-        Plane.YZ -> "[1, 0, 0]"
     }
 }
 
@@ -214,7 +99,7 @@ fun main(args: Array<String>) {
     }
 
     fun clip(vararg geometry: Geometry) {
-        val scad = OpenScadConverter().convert(geometry.last())
+        val scad = OpenScadGeometryConverter(OpenScadBuilder()).convert(geometry.last())
         ProcessBuilder("sh", "-c", "echo '$scad' | xclip -selection clipboard")
             .start().waitFor()
     }

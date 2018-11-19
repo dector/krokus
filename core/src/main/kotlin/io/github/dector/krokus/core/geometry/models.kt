@@ -23,7 +23,6 @@ interface Geometry {
     val transformations: Transformations
 
     fun setTransformation(transformation: Transformation): Geometry
-//    fun applyTransformation(transformation: Transformation): Geometry
 
     fun bounds(absolute: Boolean = true): Bounds = throw NotImplementedError()
 
@@ -33,30 +32,11 @@ interface Geometry {
 
 data class ShapeGeometry<T : Shape>(
     val shape: T,
-    override val transformations: Transformations = Transformations()   // FIXME actually there are values (position, rotation), not transformations in this semantic
+    override val transformations: Transformations = Transformations()
 ) : Geometry {
-
-    /*override val top: Vector3
-        get() = when (shape) {
-            is Cube -> origin + shape.size / 2
-            is Sphere -> origin + vz(shape.radius)
-            is CylinderDep -> origin + vz(shape.height / 2)
-            else -> throw NotImplementedError("$shape")
-        }
-
-    override val bottom: Vector3
-        get() = when (shape) {
-//            is Cube -> origin + shape.size / 2
-//            is Sphere -> origin + vz(shape.radius)
-            is CylinderDep -> origin - vz(shape.height / 2)
-            else -> throw NotImplementedError("$shape")
-        }*/
 
     override fun setTransformation(transformation: Transformation) =
         copy(transformations = transformations update transformation)
-
-//    override fun applyTransformation(transformation: Transformation) =
-//        copy(transformations = transformations merge transformation)
 
     override fun bounds(absolute: Boolean): Bounds {
         fun count(absolute: Boolean, halfSize: Vector3) =

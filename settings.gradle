@@ -10,4 +10,4 @@ pluginManagement {
 
 rootProject.name = 'krokus'
 
-include 'core', 'playground', 'javascad-exporter', 'openscad-exporter'
+include 'core', 'playground', /*'javascad-exporter',*/ 'openscad-exporter'

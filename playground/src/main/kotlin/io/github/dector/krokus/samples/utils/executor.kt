@@ -1,90 +1,38 @@
 package io.github.dector.krokus.samples.utils
 
-import eu.printingin3d.javascad.models.Abstract3dModel
 import io.github.dector.krokus.core.assembly.Assembly
 import io.github.dector.krokus.core.component.Component
 import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.javascad.JavaScadAssemblyConverter
-import io.github.dector.krokus.javascad.JavaScadComponentConverter
-import io.github.dector.krokus.javascad.JavaScadExporter
-import io.github.dector.krokus.javascad.JavaScadGeometryConverter
 import io.github.dector.krokus.openscad.OpenScadExporter
 import java.io.File
 
 
-private val geometryConverter = JavaScadGeometryConverter()
-private val componentConverter = JavaScadComponentConverter(geometryConverter)
-private val assemblyConverter = JavaScadAssemblyConverter(componentConverter)
+private val exporter = OpenScadExporter()
 
-fun exportGeometry(fileName: String, geometryBuilder: () -> Geometry) {
-    export(fileName, geometryBuilder())
-}
-
-fun exportComponent(fileName: String, componentBuilder: () -> Component) {
-    val component = componentBuilder()
-
-    export("${fileName}_${component.name}", component)
-}
-
-fun exportAssembly(fileName: String, assemblyBuilder: () -> Assembly) {
-    exportAssembly(fileName, false, assemblyBuilder)
-}
-
-fun exportAssembly(fileName: String, separate: Boolean = false, assemblyBuilder: () -> Assembly) {
-    val assembly = assemblyBuilder()
-
+fun export(name: String, separate: Boolean = false, assembly: Assembly) {
     if (separate) {
         assembly.entries.distinctBy { it.component.name }.forEachIndexed { i, entry ->
-            val name = "${fileName}_${assembly.name}_${entry.component.name}"
-            export(name, entry.component)
+            val filename = "samples/${name}_${assembly.name}_${entry.component.name}.scad"
+            exporter.export(entry.component, File(filename))
         }
     } else {
-        export("${fileName}_${assembly.name}", assembly)
+        exporter.export(assembly, File("samples/${name}_${assembly.name}.scad"))
     }
 }
 
-private fun export(name: String, geometry: Geometry) {
-    exportToScad(
-        name,
-        geometryConverter.convert(geometry)
-    )
+fun export(name: String, geometry: Geometry) {
+    exporter.export(geometry, File("samples/$name.scad"))
         .evaluateResult()
 }
 
-private fun export(name: String, component: Component) {
-    exportToScad(
-        name,
-        componentConverter.convert(component)
-    )
+fun export(name: String, component: Component) {
+    exporter.export(component, File("samples/${name}_${component.name}.scad"))
         .evaluateResult()
 }
 
-private fun export(name: String, assembly: Assembly) {
-    exportToScad(
-        name,
-        assemblyConverter.convert(assembly)
-    )
-        .evaluateResult()
-}
-
-private fun exportToScad(name: String, model: Abstract3dModel): Boolean {
-    val fileName = "samples/$name.scad"
-
-    println("Writing \"$fileName\"")
-
-    return JavaScadExporter()
-        .exportToScad(model, fileName)
-}
-
-fun exportToOpenScad(name: String, geometry: Geometry) {
-    val fileName = "samples/$name.scad"
-
-    println("Writing \"$fileName\"")
-
-    return OpenScadExporter()
-        .export(geometry, File(fileName))
-        .evaluateResult()
-}
+fun exportGeometry(name: String, builder: () -> Geometry) = export(name, builder())
+fun exportComponent(name: String, builder: () -> Component) = export(name, builder())
+fun exportAssembly(name: String, builder: () -> Assembly) = export(name, false, builder())
 
 private fun Boolean.evaluateResult() {
     if (this) println("Done.")

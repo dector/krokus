@@ -17,7 +17,7 @@ data class Transformations(
     val mirroring: Mirroring = Mirroring()
 ) {
 
-    val hasTranslation = translation.position.isNotZero
+    val hasTranslation = translation.isNotZero
     val hasRotation = rotation.angle.isNotZero
     val hasMirroring = mirroring.plane != Plane.None
 
@@ -45,3 +45,6 @@ data class Transformations(
 
     private fun applyMirroring(another: Mirroring) = another*/
 }
+
+val Translation.isNotZero: Boolean
+        get() = position.isNotZero

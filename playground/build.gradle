@@ -14,7 +14,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     compile project(':core')
-    compile project(':javascad-exporter')
     compile project(':openscad-exporter')
 }
 

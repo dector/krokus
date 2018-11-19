@@ -12,12 +12,12 @@ import io.github.dector.krokus.core.geometry.*
 import io.github.dector.krokus.core.math.asRadius
 import io.github.dector.krokus.core.space.plus
 import io.github.dector.krokus.core.space.v
-import io.github.dector.krokus.samples.utils.exportToOpenScad
+import io.github.dector.krokus.samples.utils.export
 
 
 fun main(args: Array<String>) {
     assemblyAll().entries.map { it.component }.distinctBy { it::name }.forEach {
-        exportToOpenScad("CncElectronicBox_${it.name}", it.geometry)
+        export("CncElectronicBox_${it.name}", it.geometry)
     }
 //    exportAssembly("CncElectronicBox", true, ::assemblyAll)
 }
