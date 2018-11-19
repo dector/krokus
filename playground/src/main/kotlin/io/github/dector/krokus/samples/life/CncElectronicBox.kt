@@ -24,7 +24,8 @@ fun main(args: Array<String>) {
 
 private val boardSize = v(90.2, 91.5, 30)
 private val thickness = 1.0
-private val boardThickness = 1.7 + 5
+private val boardBottomGap = 5
+private val boardThickness = 1.7
 private val spacerHoleRadius = asRadius(5.2)
 private val coverHolderSize = v(thickness, 10, 1)
 private val coverHolderGap = 0.3
@@ -61,13 +62,13 @@ fun boxComponent() = component("box") {
     fun usbCut() = cube(thickness, 8 + 0.3, 4 + 0.3).uncenter()
         .moveBy(
             y = thickness + 29,
-            z = thickness + boardThickness
+            z = thickness + boardThickness + boardBottomGap
         ).moveBy(y = boardOffset.y)
 
     fun powerCut() = cube(thickness, 9, 11).uncenter()
         .moveBy(
             y = thickness + 42,
-            z = thickness + boardThickness
+            z = thickness + boardThickness + boardBottomGap
         ).moveBy(y = boardOffset.y)
 
     fun mountHoles() = cylinder(
@@ -115,7 +116,7 @@ fun coverComponent() = component("cover") {
 }
 
 fun spacerEntries(): List<Entry> {
-    val spacerHeight = 5 - thickness
+    val spacerHeight = boardBottomGap - boardThickness //5 - thickness
 
     val spacer = component("spacer") {
         cylinder(spacerHeight, asRadius(11)) -
