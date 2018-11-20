@@ -1,20 +1,11 @@
 package io.github.dector.krokus.samples.life
 
-import io.github.dector.krokus.api.moveBy
-import io.github.dector.krokus.api.multiply
-import io.github.dector.krokus.api.uncenter
-import io.github.dector.krokus.core.assembly.Entry
-import io.github.dector.krokus.core.assembly.assembly
-import io.github.dector.krokus.core.assembly.toEntry
-import io.github.dector.krokus.core.assembly.toEntryAt
-import io.github.dector.krokus.core.component.component
-import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.math.asRadius
-import io.github.dector.krokus.core.space.plus
-import io.github.dector.krokus.core.space.v
-import io.github.dector.krokus.samples.utils.export
+//import io.github.dector.krokus.api.moveBy
+//import io.github.dector.krokus.api.multiply
+//import io.github.dector.krokus.api.uncenter
 
 
+/*
 fun main(args: Array<String>) {
     assemblyAll().entries.map { it.component }.distinctBy { it::name }.forEach {
         export("CncElectronicBox_${it.name}", it.geometry)
@@ -138,4 +129,4 @@ fun spacerEntries(): List<Entry> {
 private fun coverHolder(gap: Double = 0.0) =
     cube(coverHolderSize + v(y = 2 * gap)).uncenter()
 
-private operator fun Double.plus(number: Number) = this + number.toDouble()
+private operator fun Double.plus(number: Number) = this + number.toDouble()*/

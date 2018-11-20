@@ -1,15 +1,9 @@
 package io.github.dector.krokus.samples.life
 
-import io.github.dector.krokus.api.*
-import io.github.dector.krokus.core.component.component
-import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.material.Color
-import io.github.dector.krokus.core.material.Material
-import io.github.dector.krokus.core.space.Plane
-import io.github.dector.krokus.samples.utils.exportComponent
+//import io.github.dector.krokus.api.*
 
 
-fun main(args: Array<String>) {
+/*fun main(args: Array<String>) {
     val config = Config()
 
     exportComponent("FootStand") { buildComponent(config) }
@@ -32,7 +26,7 @@ fun buildComponent(config: Config) = component("Foot Stand", Material(Color.Ambe
     val legCut = cylinder(height = config.legHeight, radius = config.legRadius - config.legCutThickness)
         .moveTo(leg, Side.Top to Side.Top)
 
-    val legSectionCut = cube((config.legRadius + 3) * 2 + 1, 3, config.legHeight /*- 3*/)
+    val legSectionCut = cube((config.legRadius + 3) * 2 + 1, 3, config.legHeight *//*- 3*//*)
         .rotateAtZ(60)
         .moveTo(legCut, Side.Top to Side.Top)
         .let { it + it.rotateAtZ(-60) }
@@ -49,5 +43,5 @@ fun buildComponent(config: Config) = component("Foot Stand", Material(Color.Ambe
                 .union() - legSectionCut
 
     platform + (leg + hook - legCut - legSectionCut)
-}
+}*/
 

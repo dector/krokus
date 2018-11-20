@@ -1,43 +1,48 @@
 package io.github.dector.krokus.openscad
 
-import io.github.dector.krokus.api.mirrorVertically
-import io.github.dector.krokus.api.moveTo
-import io.github.dector.krokus.api.rotateAtY
+//import io.github.dector.krokus.api.mirrorVertically
+//import io.github.dector.krokus.api.moveTo
+//import io.github.dector.krokus.api.rotateAtY
 import io.github.dector.krokus.core.assembly.Assembly
 import io.github.dector.krokus.core.component.Component
-import io.github.dector.krokus.core.geometry.*
+import io.github.dector.krokus.core.geometry.Geometry
 import java.io.File
 
 
-class OpenScadExporter {
+class OpenScadExporter(
+    /** Copy result to clipboard - not export */
+    val dryRun: Boolean = true
+) {
 
     private val builder by lazy { OpenScadBuilder() }
     private val geometryConverter by lazy { OpenScadGeometryConverter(builder) }
     private val componentConverter by lazy { OpenScadComponentConverter(builder, geometryConverter) }
     private val assemblyConverter by lazy { OpenScadAssemblyConverter(builder, componentConverter) }
 
-    fun export(geometry: Geometry, file: File): Boolean {
-        file.writeAndClose(
-            geometryConverter.convert(geometry)
-        )
+    fun export(geometry: Geometry, file: File): Boolean = geometryConverter.convert(geometry).let { model ->
+        exportOrClip(file, model)
 
         return true
     }
 
-    fun export(component: Component, file: File): Boolean {
-        file.writeAndClose(
-            componentConverter.convert(component)
-        )
+    fun export(component: Component, file: File): Boolean = componentConverter.convert(component).let { model ->
+        exportOrClip(file, model)
 
         return true
     }
 
-    fun export(assembly: Assembly, file: File): Boolean {
-        file.writeAndClose(
-            assemblyConverter.convert(assembly)
-        )
+    fun export(assembly: Assembly, file: File): Boolean = assemblyConverter.convert(assembly).let { model ->
+        exportOrClip(file, model)
 
         return true
+    }
+
+    private fun exportOrClip(file: File, model: String) {
+        if (dryRun) {
+            clip(model)
+        } else {
+            file.writeAndClose(model)
+        }
     }
 
     private fun File.writeAndClose(s: String) {
@@ -46,6 +51,11 @@ class OpenScadExporter {
             flush()
             close()
         }
+    }
+
+    fun clip(text: String) {
+        ProcessBuilder("sh", "-c", "echo '$text' | xclip -selection clipboard")
+            .start().waitFor()
     }
 }
 
@@ -98,14 +108,8 @@ fun main(args: Array<String>) {
         }
     }
 
-    fun clip(vararg geometry: Geometry) {
-        val scad = OpenScadGeometryConverter(OpenScadBuilder()).convert(geometry.last())
-        ProcessBuilder("sh", "-c", "echo '$scad' | xclip -selection clipboard")
-            .start().waitFor()
-    }
-
 //    export(
-    clip(
+    /*clip(
         cube(10),
         cube(10).cornerOrigin(),
         cylinder(10, 5),
@@ -121,5 +125,25 @@ fun main(args: Array<String>) {
         cone(10, 10, 5).bottomOriginCone(),
         cube(8) - (cube(10) + sphere(7)),
         cone(10, 5, 0).bottomOriginCone().mirrorVertically().rotateAtY(30).moveTo(10)
-    )
+    )*/
 }
+
+/*
+
+val postament = cube(xy = 10, z = 20)
+val figure = sphere(5)
+figure.moveTo(z = postament.size.z / 2 + figure.size.z / 2)
+postament + figure
+
+val postament = cube(xy = 10, z = 20)
+val figure = sphere(5)
+figure.putOn(postament)
+postament + figure
+
+val postament = cube(xy = 10, z = 20)
+val figure = sphere(5)
+figure.z = postament.size.2 / 2 + figure.size.z / 2 // Reactive it
+figure.moveBy(z = { postament.size.2 / 2 })
+figure.moveByZ{ postament.size.2 / 2 }
+postament + figure
+ */

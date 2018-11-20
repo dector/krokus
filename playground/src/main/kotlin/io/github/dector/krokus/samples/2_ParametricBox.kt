@@ -1,15 +1,11 @@
 package io.github.dector.krokus.samples
 
-import io.github.dector.krokus.api.moveTo
-import io.github.dector.krokus.core.component.component
-import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.geometry.cube
-import io.github.dector.krokus.core.geometry.minus
-import io.github.dector.krokus.core.geometry.union
-import io.github.dector.krokus.core.space.*
-import io.github.dector.krokus.samples.utils.exportComponent
+//import io.github.dector.krokus.api.moveTo
+//import io.github.dector.krokus.core.geometry.minus
+//import io.github.dector.krokus.core.geometry.union
 
 
+/*
 private data class CellsConfig(
     val rows: Int, val columns: Int,
     val size: Dimen3
@@ -62,4 +58,4 @@ private fun cube(size: Dimen3) = cube(size.asVector())
 
 private fun Dimen3.asVector() = Vector3(width.toDouble(), height.toDouble(), depth.toDouble())
 
-fun <T> T.log() = also { println(it) }
+fun <T> T.log() = also { println(it) }*/

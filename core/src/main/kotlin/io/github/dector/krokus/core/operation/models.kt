@@ -1,46 +1,50 @@
 package io.github.dector.krokus.core.operation
 
+import io.github.dector.krokus.core.geometry.BaseGeometry
 import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.transformation.Transformation
-import io.github.dector.krokus.core.transformation.Transformations
+import io.github.dector.krokus.core.properties.Property
+import io.github.dector.krokus.core.properties.asScalar
 
 
-interface CombinedGeometry : Geometry
+interface CombinedGeometry : Geometry {
+    var children: Property<List<Geometry>>
+}
+
+abstract class BaseCombinedGeometry(
+    override var children: Property<List<Geometry>> = emptyList<Geometry>().asScalar()
+) : BaseGeometry(), CombinedGeometry
 
 data class Union(
-    val children: List<Geometry>,
-    override val transformations: Transformations = Transformations()
-) : CombinedGeometry {
+    override var children: Property<List<Geometry>>
+) : BaseCombinedGeometry(children) {
 
-    override fun setTransformation(transformation: Transformation) =
-        copy(transformations = transformations update transformation)
+//    override fun setTransformation(transformation: Transformation) =
+//        copy(transformations = transformations update transformation)
 
 //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)
 }
 
 data class Difference(
-    val source: Geometry,
-    val children: List<Geometry>,
-    override val transformations: Transformations = Transformations()
-) : CombinedGeometry {
+    val source: Property<Geometry>,
+    override var children: Property<List<Geometry>>
+) : BaseCombinedGeometry(children) {
 
-    override fun setTransformation(transformation: Transformation) =
-        copy(transformations = transformations update transformation)
+//    override fun setTransformation(transformation: Transformation) =
+//        copy(transformations = transformations update transformation)
 
-    override fun bounds(absolute: Boolean) = source.bounds(absolute)    // FIXME may be less
+//    override fun bounds(absolute: Boolean) = source.bounds(absolute)    // FIXME may be less
 
     //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)
 }
 
 data class Intersection(
-    val children: List<Geometry>,
-    override val transformations: Transformations = Transformations()
-) : CombinedGeometry {
+    override var children: Property<List<Geometry>>
+) : BaseCombinedGeometry(children) {
 
-    override fun setTransformation(transformation: Transformation) =
-        copy(transformations = transformations update transformation)
+//    override fun setTransformation(transformation: Transformation) =
+//        copy(transformations = transformations update transformation)
 
 //    override fun applyTransformation(transformation: Transformation) =
 //        copy(transformations = transformations merge transformation)

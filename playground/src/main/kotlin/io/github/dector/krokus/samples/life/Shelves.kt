@@ -1,23 +1,14 @@
 package io.github.dector.krokus.samples.life
 
-import io.github.dector.krokus.api.moveBy
-import io.github.dector.krokus.api.multiply
-import io.github.dector.krokus.api.rotateAtZ
-import io.github.dector.krokus.api.uncenter
-import io.github.dector.krokus.core.assembly.assembly
-import io.github.dector.krokus.core.assembly.toEntry
-import io.github.dector.krokus.core.component.component
-import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.geometry.cube
-import io.github.dector.krokus.core.geometry.minus
-import io.github.dector.krokus.core.geometry.union
-import io.github.dector.krokus.core.material.Color
-import io.github.dector.krokus.core.material.Material
-import io.github.dector.krokus.core.space.plus
-import io.github.dector.krokus.core.space.v
-import io.github.dector.krokus.samples.utils.exportAssembly
+//import io.github.dector.krokus.api.moveBy
+//import io.github.dector.krokus.api.multiply
+//import io.github.dector.krokus.api.rotateAtZ
+//import io.github.dector.krokus.api.uncenter
+//import io.github.dector.krokus.core.geometry.minus
+//import io.github.dector.krokus.core.geometry.union
 
 
+/*
 fun main(args: Array<String>) {
     exportAssembly("Shelves") {
         assembly("All") {
@@ -182,4 +173,4 @@ private fun Geometry.multiply(number: Int, modifiers: Map<Int, Modifier>) =
     multiply(number).mapIndexed { index, geometry ->
         val modifier = modifiers[index]
         modifier?.invoke(geometry) ?: geometry
-    }
+    }*/

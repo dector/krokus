@@ -1,38 +1,42 @@
 package io.github.dector.krokus.openscad
 
 import io.github.dector.krokus.core.converter.GeometryConverter
-import io.github.dector.krokus.core.geometry.*
+import io.github.dector.krokus.core.geometry.Geometry
+import io.github.dector.krokus.core.geometry.ShapeGeometry
+import io.github.dector.krokus.core.geometry.shape.Cone
+import io.github.dector.krokus.core.geometry.shape.Cube
+import io.github.dector.krokus.core.geometry.shape.Cylinder
+import io.github.dector.krokus.core.geometry.shape.Sphere
 import io.github.dector.krokus.core.operation.Difference
 import io.github.dector.krokus.core.operation.Intersection
 import io.github.dector.krokus.core.operation.Union
-import io.github.dector.krokus.core.transformation.Transformations
 
 class OpenScadGeometryConverter(
     val builder: OpenScadBuilder
 ) : GeometryConverter<String> {
 
     override fun convert(geometry: Geometry): String =
-        convertTransformations(geometry.transformations) + convertGeometry(geometry)
+        convertTransformationsIn(geometry) + convertGeometry(geometry)
 
-    private fun convertTransformations(transformations: Transformations) = buildString {
-        builder.appendTranslationIfRequired(this, transformations.translation)
+    private fun convertTransformationsIn(geometry: Geometry) = buildString {
+        builder.appendTranslationIfRequired(this, geometry.translation)
 
-        if (transformations.hasMirroring) {
+        if (geometry.hasMirroring) {
             append("mirror(")
-            append(transformations.mirroring.asString())
+            append(geometry.mirroring.value.asString())
             append(") ")
         }
 
-        if (transformations.hasRotation) {
+        if (geometry.hasRotation) {
             append("rotate(")
-            append(transformations.rotation.angle.asString())
+            append(geometry.rotation.value.angle.asString())
             append(") ")
         }
     }
 
     private fun convertGeometry(geometry: Geometry) = when (geometry) {
         is ShapeGeometry<*> -> {
-            val shape = geometry.shape
+            val shape = geometry.shape.value
 
             when (shape) {
                 is Cube -> convertCube(shape)
@@ -101,15 +105,15 @@ class OpenScadGeometryConverter(
 
     private fun convertUnion(union: Union) = buildString {
         append("union() {")
-        union.children.joinAllTo(this)
+        union.children.value.joinAllTo(this)
         append("}")
     }
 
     private fun convertDifference(difference: Difference) = buildString {
         append("difference(){\n")
-        append(convert(difference.source))
+        append(convert(difference.source.value))
 
-        difference.children.joinAllTo(this)
+        difference.children.value.joinAllTo(this)
 
         append("}")
     }
@@ -117,7 +121,7 @@ class OpenScadGeometryConverter(
     private fun convertIntersection(intersection: Intersection) = buildString {
         append("intersection() {")
 
-        intersection.children.joinAllTo(this)
+        intersection.children.value.joinAllTo(this)
 
         append("}")
     }

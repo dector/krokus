@@ -1,9 +1,11 @@
 package io.github.dector.krokus.openscad
 
 import io.github.dector.krokus.core.material.Color
+import io.github.dector.krokus.core.properties.Property
 import io.github.dector.krokus.core.space.Angle3
 import io.github.dector.krokus.core.space.Plane
 import io.github.dector.krokus.core.space.Vector3
+import io.github.dector.krokus.core.space.allAreEqual
 import io.github.dector.krokus.core.transformation.Mirroring
 import io.github.dector.krokus.core.transformation.Translation
 import io.github.dector.krokus.core.transformation.isNotZero
@@ -11,8 +13,8 @@ import io.github.dector.krokus.core.transformation.isNotZero
 
 class OpenScadBuilder {
 
-    fun appendTranslationIfRequired(sb: StringBuilder, translation: Translation) =
-        if (translation.isNotZero) appendTranslation(sb, translation)
+    fun appendTranslationIfRequired(sb: StringBuilder, translation: Property<Translation>) =
+        if (translation.value.isNotZero) appendTranslation(sb, translation.value)
         else sb
 
     fun appendTranslation(sb: StringBuilder, translation: Translation) = sb.apply {

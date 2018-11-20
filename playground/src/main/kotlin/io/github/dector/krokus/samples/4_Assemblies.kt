@@ -1,20 +1,12 @@
 package io.github.dector.krokus.samples
 
-import io.github.dector.krokus.api.mirrorVertically
-import io.github.dector.krokus.api.moveToZ
-import io.github.dector.krokus.api.rotateAtX
-import io.github.dector.krokus.api.rotateAtY
-import io.github.dector.krokus.core.assembly.assembly
-import io.github.dector.krokus.core.assembly.toEntry
-import io.github.dector.krokus.core.assembly.toEntryAt
-import io.github.dector.krokus.core.component.component
-import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.core.material.Color
-import io.github.dector.krokus.core.material.Material
-import io.github.dector.krokus.samples.utils.exportAssembly
-import kotlin.math.sqrt
+//import io.github.dector.krokus.api.mirrorVertically
+//import io.github.dector.krokus.api.moveToZ
+//import io.github.dector.krokus.api.rotateAtX
+//import io.github.dector.krokus.api.rotateAtY
 
 
+/*
 fun main(args: Array<String>) {
     exportAssembly("4assembly") {
 
@@ -56,4 +48,4 @@ fun main(args: Array<String>) {
             )
         }
     }
-}
+}*/

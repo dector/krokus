@@ -1,13 +1,12 @@
 package io.github.dector.krokus.samples.life
 
-import io.github.dector.krokus.api.moveBy
-import io.github.dector.krokus.api.moveTo
-import io.github.dector.krokus.api.rotateAtX
-import io.github.dector.krokus.api.uncenter
-import io.github.dector.krokus.core.geometry.*
-import io.github.dector.krokus.samples.utils.exportGeometry
+//import io.github.dector.krokus.api.moveBy
+//import io.github.dector.krokus.api.moveTo
+//import io.github.dector.krokus.api.rotateAtX
+//import io.github.dector.krokus.api.uncenter
 
 
+/*
 fun main(args: Array<String>) {
     exportGeometry("PowerSupply") {
         val innerWidth = 110
@@ -141,4 +140,4 @@ private fun converterBoard(): Geometry {
 }
 
 private fun Geometry.moveBySize(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0) =
-        moveBy(x = size.x * x, y = size.y * y, z = size.z * z)
+        moveBy(x = size.x * x, y = size.y * y, z = size.z * z)*/

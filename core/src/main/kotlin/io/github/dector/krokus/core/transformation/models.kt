@@ -3,6 +3,7 @@ package io.github.dector.krokus.core.transformation
 import io.github.dector.krokus.core.space.Angle3
 import io.github.dector.krokus.core.space.Plane
 import io.github.dector.krokus.core.space.Vector3
+import io.github.dector.krokus.core.space.isNotZero
 
 
 interface Transformation

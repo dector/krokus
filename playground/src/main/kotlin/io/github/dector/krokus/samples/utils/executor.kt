@@ -7,7 +7,7 @@ import io.github.dector.krokus.openscad.OpenScadExporter
 import java.io.File
 
 
-private val exporter = OpenScadExporter()
+private val exporter = OpenScadExporter(dryRun = true)
 
 fun export(name: String, separate: Boolean = false, assembly: Assembly) {
     if (separate) {
