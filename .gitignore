@@ -1,6 +1,7 @@
 # Intellij files
 .idea/
 *.iml
+.attach_pid*
 
 # Gradle files
 .gradle/
