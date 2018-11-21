@@ -58,7 +58,7 @@ fun design() = component("all", Material(Color.Erin)) {
     ).union()
         .rotateAtZ(90)
         .moveBy(
-            x = fsDepth,
+            xProp = fsDepth,
             y = demoSpace.y - (3* thickness + 2* fsWidth + ssDepth),
             z = demoOffset.z
         )
@@ -69,8 +69,8 @@ fun first(): Geometry {
         topHeight,
         fsDepth
     ).multiply(3, mapOf(
-        1 to { it -> it.moveBy(x = thickness + fsWidth) },
-        2 to { it -> it.moveBy(x = 2 * (thickness + fsWidth)) }
+        1 to { it -> it.moveBy(xProp = thickness + fsWidth) },
+        2 to { it -> it.moveBy(xProp = 2 * (thickness + fsWidth)) }
     )).union()
 
     fun fsTop() = hPlate(
@@ -92,10 +92,10 @@ fun first(): Geometry {
                 fsWidth,
                 fsDepth
             ).moveBy(
-                x = thickness,
+                xProp = thickness,
                 z = atHeight
             ).multiply(2, mapOf(
-                1 to { it -> it.moveBy(x = fsWidth + thickness) }
+                1 to { it -> it.moveBy(xProp = fsWidth + thickness) }
             )).forEach { shelves.add(it) }
 
             shelfIndex++
@@ -116,8 +116,8 @@ fun second(): Geometry {
         topHeight,
         ssDepth
     ).multiply(3, mapOf(
-        1 to { it -> it.moveBy(x = thickness + ssWidth1) },
-        2 to { it -> it.moveBy(x = 2 * thickness + ssWidth1 + ssWidth2) }
+        1 to { it -> it.moveBy(xProp = thickness + ssWidth1) },
+        2 to { it -> it.moveBy(xProp = 2 * thickness + ssWidth1 + ssWidth2) }
     )).union()
 
     fun ssTop() = hPlate(
@@ -139,7 +139,7 @@ fun second(): Geometry {
                 ssWidth1 + thickness + ssWidth2,
                 ssDepth
             ).moveBy(
-                x = thickness,
+                xProp = thickness,
                 z = atHeight
             ).let { shelves.add(it) }
 
@@ -156,7 +156,7 @@ fun second(): Geometry {
     ).union()
         .rotateAtZ(-90)
         .moveBy(
-            x = thickness * 3 + fsWidth * 2,
+            xProp = thickness * 3 + fsWidth * 2,
             y = fsDepth
         )
 }

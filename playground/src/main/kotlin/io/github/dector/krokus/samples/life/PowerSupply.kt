@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         val indicatorCut = cube(45, thickness, 26).uncenter().run {
             val ref = shell.bounds()
             moveBy(
-                x = ref.center().x - bounds().center().x,
+                xProp = ref.center().xProp - bounds().center().xProp,
                 y = ref.from.y,
                 z = ref.center().z - bounds().center().z
             )
@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
         val buttonCut = cube(18, thickness, 12).uncenter().run {
             val ref = shell.bounds()
             moveBy(
-                x = ref.center().x - bounds().center().x,
+                xProp = ref.center().xProp - bounds().center().xProp,
                 y = ref.from.y,
                 z = ref.from.z + (ref.size().z - indicatorCut.size.z) / 4
             ).moveBy(z = -size.z / 2)
@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
         val voltageCut = cylinder(thickness + 1, radius = 4).run {
             val ref = shell.bounds()
             moveBy(
-                x = ref.size().x - (ref.size().x - indicatorCut.size.x) / 4,
+                xProp = ref.size().xProp - (ref.size().xProp - indicatorCut.size.xProp) / 4,
                 y = shape.height / 2,
                 z = ref.size().z / 2
             ).rotateAtX(-90)
@@ -48,7 +48,7 @@ fun main(args: Array<String>) {
         val currentCut = cylinder(thickness + 1, radius = 3.5).run {
             val ref = shell.bounds()
             moveBy(
-                x = (ref.size().x - indicatorCut.size.x) / 4,
+                xProp = (ref.size().xProp - indicatorCut.size.xProp) / 4,
                 y = shape.height / 2,
                 z = ref.size().z / 2
             ).rotateAtX(-90)
@@ -57,7 +57,7 @@ fun main(args: Array<String>) {
         val outputCut = cylinder(thickness, radius = 5).run {
             val ref = shell.bounds()
             moveBy(
-                x = 2 * shape.radius,//ref.size().x / 5,
+                xProp = 2 * shape.radius,//ref.size().xProp / 5,
                 y = ref.size().y - 2 * shape.radius,//ref.size().y / 5
                 z = shape.height / 2
             )
@@ -66,7 +66,7 @@ fun main(args: Array<String>) {
         val inputCut = cylinder(thickness, radius = 5).run {
             val ref = shell.bounds()
             moveBy(
-                x = ref.size().x - 2 * shape.radius,
+                xProp = ref.size().xProp - 2 * shape.radius,
                 y = ref.size().y - 2 * shape.radius,
                 z = ref.size().z - shape.height / 2
             )
@@ -84,7 +84,7 @@ fun main(args: Array<String>) {
         val boardVitamin = converterBoard()
 
         val vitamins = listOf(
-            boardVitamin.moveBy(x = shell.size.x / 2).moveBySize(x = 0.5)
+            boardVitamin.moveBy(xProp = shell.size.xProp / 2).moveBySize(xProp = 0.5)
         ).union()
 
         shell - allCuts + vitamins
@@ -96,7 +96,7 @@ private fun converterBoard(): Geometry {
 
     fun mountHole(dx: Int, dy: Int) = cylinder(2, 1.5).run {
         moveBy(
-            x = if (dx >= 0) dx else board.size.x + dx,
+            xProp = if (dx >= 0) dx else board.size.xProp + dx,
             y = if (dy >= 0) dy else board.size.y + dy,
             z = board.size.z / 2
         )
@@ -105,14 +105,14 @@ private fun converterBoard(): Geometry {
     fun connector(position: String) = cube(8, 10, 10).uncenter().run {
         when (position) {
             "in" -> moveBy(y = board.size.y - 4 - size.y)
-            "out" -> moveBy(x = board.size.x - size.x, y = 4)
+            "out" -> moveBy(xProp = board.size.xProp - size.xProp, y = 4)
             else -> this
         }
     }.moveBy(z = board.size.z)
 
     fun generator() = (cylinder(9, 7) - cylinder(9, 4)).run {
         moveTo(
-            x = 30,
+            xProp = 30,
             y = size.y / 2,
             z = size.z / 2
         )
@@ -120,14 +120,14 @@ private fun converterBoard(): Geometry {
 
     fun condensator(position: String) = cylinder(10, 5).run {
         when (position) {
-            "left" -> moveBy(x = 4 + size.x / 2, y = size.y / 2)
-            "right" -> moveBy(x = board.size.x - 4 - size.x / 2, y = board.size.y - size.y / 2)
+            "left" -> moveBy(xProp = 4 + size.xProp / 2, y = size.y / 2)
+            "right" -> moveBy(xProp = board.size.xProp - 4 - size.xProp / 2, y = board.size.y - size.y / 2)
             else -> this
         }.moveBy(z = size.z / 2)
     }.moveBy(z = board.size.z)
 
     fun microscheme() = cube(8, 9, 4).uncenter().run {
-        moveBy(x = 14, y = board.size.y - 4 - size.y)
+        moveBy(xProp = 14, y = board.size.y - 4 - size.y)
     }.moveBy(z = board.size.z)
 
     return board -
@@ -139,5 +139,5 @@ private fun converterBoard(): Geometry {
 
 }
 
-private fun Geometry.moveBySize(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0) =
-        moveBy(x = size.x * x, y = size.y * y, z = size.z * z)*/
+private fun Geometry.moveBySize(xProp: Double = 0.0, y: Double = 0.0, z: Double = 0.0) =
+        moveBy(xProp = size.xProp * xProp, y = size.y * y, z = size.z * z)*/

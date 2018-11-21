@@ -2,20 +2,18 @@ package io.github.dector.krokus.core.operation
 
 import io.github.dector.krokus.core.geometry.BaseGeometry
 import io.github.dector.krokus.core.geometry.Geometry
-import io.github.dector.krokus.core.properties.Property
-import io.github.dector.krokus.core.properties.asScalar
 
 
 interface CombinedGeometry : Geometry {
-    var children: Property<List<Geometry>>
+    var children: () -> List<Geometry>
 }
 
 abstract class BaseCombinedGeometry(
-    override var children: Property<List<Geometry>> = emptyList<Geometry>().asScalar()
+    override var children: () -> List<Geometry> = { emptyList() }
 ) : BaseGeometry(), CombinedGeometry
 
 data class Union(
-    override var children: Property<List<Geometry>>
+    override var children: () -> List<Geometry>
 ) : BaseCombinedGeometry(children) {
 
 //    override fun setTransformation(transformation: Transformation) =
@@ -26,8 +24,8 @@ data class Union(
 }
 
 data class Difference(
-    val source: Property<Geometry>,
-    override var children: Property<List<Geometry>>
+    val source: () -> Geometry,
+    override var children: () -> List<Geometry>
 ) : BaseCombinedGeometry(children) {
 
 //    override fun setTransformation(transformation: Transformation) =
@@ -40,7 +38,7 @@ data class Difference(
 }
 
 data class Intersection(
-    override var children: Property<List<Geometry>>
+    override var children: () -> List<Geometry>
 ) : BaseCombinedGeometry(children) {
 
 //    override fun setTransformation(transformation: Transformation) =

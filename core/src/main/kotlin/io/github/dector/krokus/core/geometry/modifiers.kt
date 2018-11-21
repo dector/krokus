@@ -1,10 +1,9 @@
 package io.github.dector.krokus.core.geometry
 
 import io.github.dector.krokus.core.geometry.shape.Cube
-import io.github.dector.krokus.core.properties.asScalar
 
 
-//fun Geometry.rotateAtX(angleDeg: Float) = copyWithTransformation(Rotate(x = angleDeg))
+//fun Geometry.rotateAtX(angleDeg: Float) = copyWithTransformation(Rotate(xProp = angleDeg))
 //
 //fun Geometry.rotateAtX(angleDeg: Int) = rotateAtX(angleDeg.toFloat())
 //
@@ -17,15 +16,16 @@ import io.github.dector.krokus.core.properties.asScalar
 
 //fun Cube.centered() = copy(centered = true)
 
-//fun ShapeGeometry<Cube>.resizeXBy(value: Number) = copy(shape = shape.copy(size = shape.size.copy(x = shape.size.x + value.toDouble())))
+//fun ShapeGeometry<Cube>.resizeXBy(ref: Number) = copy(shape = shape.copy(size = shape.size.copy(xProp = shape.size.xProp + ref.toDouble())))
 //
-//fun ShapeGeometry<Cube>.resizeBy(x: Number = 0, y: Number = 0, z: Number = 0) =
-//        copy(shape = shape.copy(size = shape.size + v(x, y, z)))
-//fun ShapeGeometry<Cube>.resizeBy(value: Number): ShapeGeometry<Cube> =
-//        resizeBy(value, value, value)
+//fun ShapeGeometry<Cube>.resizeBy(xProp: Number = 0, y: Number = 0, z: Number = 0) =
+//        copy(shape = shape.copy(size = shape.size + v(xProp, y, z)))
+//fun ShapeGeometry<Cube>.resizeBy(ref: Number): ShapeGeometry<Cube> =
+//        resizeBy(ref, ref, ref)
 
-fun ShapeGeometry<Cube>.cornerOrigin() =
-    copy(shape = shape.value.copy(origin = Cube.Origin.Corner).asScalar())
+fun ShapeGeometry<Cube>.cornerOrigin() = apply {
+    shape.update { it().modify { it.copy(origin = Cube.Origin.Corner) } }
+}
 
 //fun ShapeGeometry<Cylinder>.bottomOrigin() =
 //        copy(shape = shape.copy(origin = Cylinder.Origin.Bottom))

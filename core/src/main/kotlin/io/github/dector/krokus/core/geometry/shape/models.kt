@@ -15,7 +15,7 @@ import io.github.dector.krokus.core.space.Vector3
 //
 //    fun center() = (to - from) / 2*/
 //
-//    fun size() = (to - from).run { v(x.absoluteValue, y.absoluteValue, z.absoluteValue) }
+//    fun size() = (to - from).run { v(xProp.absoluteValue, y.absoluteValue, z.absoluteValue) }
 //}
 
 sealed class Shape
@@ -25,6 +25,8 @@ data class Cube(
     val size: Vector3,
     val origin: Origin = Origin.Center
 ) : Shape() {
+
+    fun modify(with: (Cube) -> Cube) = { with(this) }
 
     enum class Origin {
         Center, Corner

@@ -30,10 +30,10 @@ private fun boxComponent(cellsConfig: CellsConfig, boxConfig: BoxConfig) = compo
         val result = mutableListOf<Geometry>()
         (1..cellsConfig.columns).forEach { i ->
             (1..cellsConfig.rows).forEach { j ->
-                val x = boxConfig.outerWall + (i - 1) * (cellsConfig.size.width + boxConfig.innerWall)
+                val xProp = boxConfig.outerWall + (i - 1) * (cellsConfig.size.width + boxConfig.innerWall)
                 val y = boxConfig.outerWall + (j - 1) * (cellsConfig.size.height + boxConfig.innerWall)
                 val z = boxConfig.bottom
-                result += cube(cellsConfig.size).moveTo(v(x, y, z) + cellsConfig.size.asVector() / 2)
+                result += cube(cellsConfig.size).moveTo(v(xProp, y, z) + cellsConfig.size.asVector() / 2)
             }
         }
 
@@ -50,9 +50,9 @@ private data class Dimen3(val width: Int, val height: Int, val depth: Int)
 
 private fun Dimen3.wh() = v2(width, height)
 
-fun v2(x: Int, y: Int) = Vector2(x.toFloat(), y.toFloat())
+fun v2(xProp: Int, y: Int) = Vector2(xProp.toFloat(), y.toFloat())
 
-fun Vector2.withZ(z: Int) = Vector3(x = x.toDouble(), y = y.toDouble(), z = z.toDouble())
+fun Vector2.withZ(z: Int) = Vector3(xProp = xProp.toDouble(), y = y.toDouble(), z = z.toDouble())
 
 private fun cube(size: Dimen3) = cube(size.asVector())
 

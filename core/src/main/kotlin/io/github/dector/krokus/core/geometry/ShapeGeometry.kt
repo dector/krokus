@@ -4,11 +4,9 @@ import io.github.dector.krokus.core.geometry.shape.Shape
 import io.github.dector.krokus.core.properties.Property
 
 data class ShapeGeometry<T : Shape>(
-    var shape: Property<T>
+    val shape: Property<T>
 //    override val transformations: Transformations = Transformations()
 ) : BaseGeometry() {
-
-
 
 //    override fun setTransformation(transformation: Transformation) =
 //        copy(transformations = transformations update transformation)
@@ -25,7 +23,7 @@ data class ShapeGeometry<T : Shape>(
         return when (shape) {
             is Cube -> {
                 val halfSize =
-                    v(shape.size.x / 2, shape.size.y / 2, shape.size.z / 2)
+                    v(shape.size.xProp / 2, shape.size.y / 2, shape.size.z / 2)
                 count(absolute, halfSize)
             }
             is Cylinder -> {

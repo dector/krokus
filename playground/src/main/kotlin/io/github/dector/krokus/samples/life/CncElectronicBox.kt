@@ -22,7 +22,7 @@ private val coverHolderSize = v(thickness, 10, 1)
 private val coverHolderGap = 0.3
 private val boardOffset = v(0, 3, 0)
 
-private val innerSpace = boardSize + boardOffset + v(x = boardOffset.y, y = boardOffset.y)
+private val innerSpace = boardSize + boardOffset + v(xProp = boardOffset.y, y = boardOffset.y)
 private val shellSize = innerSpace + v(2 * thickness)
 private val coverSize = innerSpace.copy(z = thickness)
 
@@ -42,7 +42,7 @@ fun boxComponent() = component("box") {
                 .mapIndexed { i, cut ->
                     when (i) {
                         0 -> cut
-                        1 -> cut.moveBy(x = shellSize.x - cut.size.x)
+                        1 -> cut.moveBy(xProp = shellSize.xProp - cut.size.xProp)
                         else -> cube()
                     }.moveBy(
                         y = (shellSize.y - cut.size.y) / 2,
@@ -73,10 +73,10 @@ fun boxComponent() = component("box") {
             val ref = v(78, 76)
 
             val positions = mapOf(
-                0 to v(offset.x, offset.y),
-                1 to v(offset.x, offset.y + ref.y),
-                2 to v(offset.x + ref.x, offset.y + ref.y),
-                3 to v(offset.x + ref.x, offset.y)
+                0 to v(offset.xProp, offset.y),
+                1 to v(offset.xProp, offset.y + ref.y),
+                2 to v(offset.xProp + ref.xProp, offset.y + ref.y),
+                3 to v(offset.xProp + ref.xProp, offset.y)
             )
             hole.moveBy(positions[i] ?: v())
         }.union()
@@ -92,8 +92,8 @@ fun coverComponent() = component("cover") {
             .multiply(2)
             .mapIndexed { i, cut ->
                 when (i) {
-                    0 -> cut.moveBy(x = -cut.size.x)
-                    1 -> cut.moveBy(x = cover.size.x)
+                    0 -> cut.moveBy(xProp = -cut.size.xProp)
+                    1 -> cut.moveBy(xProp = cover.size.xProp)
                     else -> cube()
                 }.moveBy(
                     y = (cover.size.y - cut.size.y) / 2
@@ -103,7 +103,7 @@ fun coverComponent() = component("cover") {
     cover + coverHolders() -
             cube(25, 7, thickness)
                 .moveBy(z = cover.size.z / 2)
-                .moveBy(x = cover.size.x / 2, y = cover.size.y - 20)
+                .moveBy(xProp = cover.size.xProp / 2, y = cover.size.y - 20)
 }
 
 fun spacerEntries(): List<Entry> {
@@ -114,12 +114,12 @@ fun spacerEntries(): List<Entry> {
                 cylinder(spacerHeight, spacerHoleRadius)
     }
 
-    val x = -spacer.geometry.size.x / 2 - 10
+    val xProp = -spacer.geometry.size.xProp / 2 - 10
     val y = spacer.geometry.size.y / 2
 
     return (0..3).map { index ->
         spacer.toEntryAt(
-            x = x,
+            xProp = xProp,
             y = (2 * y + 5) * index + 10,
             z = spacerHeight / 2
         )

@@ -19,24 +19,24 @@ class OpenScadGeometryConverter(
         convertTransformationsIn(geometry) + convertGeometry(geometry)
 
     private fun convertTransformationsIn(geometry: Geometry) = buildString {
-        builder.appendTranslationIfRequired(this, geometry.translation)
+        builder.appendTranslationIfRequired(this, geometry.translation.ref())
 
         if (geometry.hasMirroring) {
             append("mirror(")
-            append(geometry.mirroring.value.asString())
+            append(geometry.mirroring.ref().asString())
             append(") ")
         }
 
         if (geometry.hasRotation) {
             append("rotate(")
-            append(geometry.rotation.value.angle.value.asString())
+            append(geometry.rotation.ref().angle.ref().asString())
             append(") ")
         }
     }
 
     private fun convertGeometry(geometry: Geometry) = when (geometry) {
         is ShapeGeometry<*> -> {
-            val shape = geometry.shape.value
+            val shape = geometry.shape.ref()
 
             when (shape) {
                 is Cube -> convertCube(shape)
@@ -105,15 +105,15 @@ class OpenScadGeometryConverter(
 
     private fun convertUnion(union: Union) = buildString {
         append("union() {")
-        union.children.value.joinAllTo(this)
+        union.children().joinAllTo(this)
         append("}")
     }
 
     private fun convertDifference(difference: Difference) = buildString {
         append("difference(){\n")
-        append(convert(difference.source.value))
+        append(convert(difference.source()))
 
-        difference.children.value.joinAllTo(this)
+        difference.children().joinAllTo(this)
 
         append("}")
     }
@@ -121,7 +121,7 @@ class OpenScadGeometryConverter(
     private fun convertIntersection(intersection: Intersection) = buildString {
         append("intersection() {")
 
-        intersection.children.value.joinAllTo(this)
+        intersection.children().joinAllTo(this)
 
         append("}")
     }

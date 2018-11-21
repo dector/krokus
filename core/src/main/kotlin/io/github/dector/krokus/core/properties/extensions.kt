@@ -1,4 +1,4 @@
 package io.github.dector.krokus.core.properties
 
 
-val Property<Double>.isZero get() = value == 0.0
+//val Property<Double>.isZero get() = ref == 0.0
