@@ -1,5 +1,18 @@
 package io.github.dector.krokus.api
 
+import io.github.dector.krokus.core.geometry.Geometry
+import io.github.dector.krokus.core.properties.Property
+import io.github.dector.krokus.core.properties.asScalar
+import io.github.dector.krokus.core.space.Vector3
+import io.github.dector.krokus.core.space.v
+import io.github.dector.krokus.core.transformation.Translation
+
+
+fun Geometry.moveTo(position: Property<Vector3>) = this.apply {
+    translation = Translation(position).asScalar()
+}
+
+fun Geometry.moveTo(xyz: Number) = moveTo(v(xyz).asScalar())
 
 //fun <G : Geometry> G.moveTo(position: Vector3) = setTransformation(Translation(position)) as G
 //fun Geometry.moveToX(value: Number) = moveTo(vx(value))

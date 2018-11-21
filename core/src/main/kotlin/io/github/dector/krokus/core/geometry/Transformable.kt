@@ -15,9 +15,9 @@ interface Transformable {
     var mirroring: Property<Mirroring>
 
     val hasTranslation: Boolean
-        get() = translation.value.isNotZero
+        get() = translation.isNotZero
     val hasRotation: Boolean
-        get() = rotation.value.angle.isNotZero
+        get() = rotation.value.angle.value.isNotZero
     val hasMirroring: Boolean
-        get() = mirroring.value.plane != Plane.None
+        get() = mirroring.value.plane.value != Plane.None
 }

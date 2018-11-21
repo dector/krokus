@@ -29,7 +29,7 @@ class OpenScadGeometryConverter(
 
         if (geometry.hasRotation) {
             append("rotate(")
-            append(geometry.rotation.value.angle.asString())
+            append(geometry.rotation.value.angle.value.asString())
             append(") ")
         }
     }

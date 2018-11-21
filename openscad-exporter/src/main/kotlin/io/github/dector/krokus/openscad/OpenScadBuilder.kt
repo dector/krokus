@@ -14,12 +14,12 @@ import io.github.dector.krokus.core.transformation.isNotZero
 class OpenScadBuilder {
 
     fun appendTranslationIfRequired(sb: StringBuilder, translation: Property<Translation>) =
-        if (translation.value.isNotZero) appendTranslation(sb, translation.value)
+        if (translation.isNotZero) appendTranslation(sb, translation.value)
         else sb
 
     fun appendTranslation(sb: StringBuilder, translation: Translation) = sb.apply {
         append("translate(")
-        append(translation.position.asString())
+        append(translation.position.value.asString())
         append(") ")
     }
 
@@ -40,7 +40,7 @@ internal fun Vector3.asString(canBeSimplified: Boolean = false) =
 
 internal fun Angle3.asString() = "[$x, $y, $z]"
 
-internal fun Mirroring.asString() = when (plane) {
+internal fun Mirroring.asString() = when (plane.value) {
     Plane.None -> ""
     Plane.XY -> "[0, 0, 1]"
     Plane.XZ -> "[0, 1, 0]"

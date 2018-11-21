@@ -11,7 +11,8 @@ fun main() {
         ::primitiveCubeCentered,
         ::primitiveCubeCornered,
         ::primitiveSphere,
-        ::primitiveCylinder
+        ::primitiveCylinder,
+        ::primitiveCubeWithTranslation
     )
 
     samples
