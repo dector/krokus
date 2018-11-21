@@ -1,5 +1,8 @@
 package io.github.dector.krokus.core.geometry
 
+import io.github.dector.krokus.core.geometry.shape.Cube
+import io.github.dector.krokus.core.properties.asScalar
+
 
 //fun Geometry.rotateAtX(angleDeg: Float) = copyWithTransformation(Rotate(x = angleDeg))
 //
@@ -20,10 +23,10 @@ package io.github.dector.krokus.core.geometry
 //        copy(shape = shape.copy(size = shape.size + v(x, y, z)))
 //fun ShapeGeometry<Cube>.resizeBy(value: Number): ShapeGeometry<Cube> =
 //        resizeBy(value, value, value)
-//
-//fun ShapeGeometry<Cube>.cornerOrigin() =
-//        copy(shape = shape.copy(origin = Cube.Origin.Corner))
-//
+
+fun ShapeGeometry<Cube>.cornerOrigin() =
+    copy(shape = shape.value.copy(origin = Cube.Origin.Corner).asScalar())
+
 //fun ShapeGeometry<Cylinder>.bottomOrigin() =
 //        copy(shape = shape.copy(origin = Cylinder.Origin.Bottom))
 //
