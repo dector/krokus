@@ -9,6 +9,7 @@ fun main() {
 
     val samples = listOf<Example>(
         ::primitiveCubeCentered,
+        ::primitiveCubeWithModifier,
         ::primitiveCubeCornered,
         ::primitiveSphere,
         ::primitiveCylinder,

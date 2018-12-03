@@ -2,15 +2,17 @@ package io.github.dector.krokus.samples
 
 import io.github.dector.krokus.api.moveBy
 import io.github.dector.krokus.api.moveTo
-import io.github.dector.krokus.core.geometry.cornerOrigin
-import io.github.dector.krokus.core.geometry.cube
-import io.github.dector.krokus.core.geometry.cylinder
-import io.github.dector.krokus.core.geometry.sphere
+import io.github.dector.krokus.core.geometry.*
 import io.github.dector.krokus.core.space.v
 
 
 fun primitiveCubeCentered() =
     cube(10)
+
+fun primitiveCubeWithModifier() =
+    cube {
+        size(10)
+    }
 
 fun primitiveCubeCornered() =
     cube(10)

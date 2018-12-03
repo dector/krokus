@@ -12,6 +12,8 @@ fun cube(size: Vector3) = ShapeGeometry(
 fun cube(sx: Number = 0, sy: Number = 0, sz: Number = 0) = cube(v(sx, sy, sz))
 fun cube(size: Number) = cube(size, size, size)
 
+fun cube(modifier: ShapeGeometry<Cube>.() -> Unit) = cube().apply(modifier)
+
 fun sphere(radius: Double) = ShapeGeometry(
     shape = Property.from { Sphere(radius = radius) }
 )

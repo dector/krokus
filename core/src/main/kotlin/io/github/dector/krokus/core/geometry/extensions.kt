@@ -1,5 +1,8 @@
 package io.github.dector.krokus.core.geometry
 
+import io.github.dector.krokus.core.geometry.shape.Cube
+import io.github.dector.krokus.core.properties.Property
+
 
 //fun Geometry.findSide(side: Side, applyTranslation: Boolean = true) = when (this) {
 //    is ShapeGeometry<*> -> when (shape) {
@@ -33,3 +36,12 @@ package io.github.dector.krokus.core.geometry
 //
 //val ShapeGeometry<CylinderDep>.height: Double
 //    get() = shape.height
+
+fun ShapeGeometry<Cube>.size(xyz: Number) {
+    shape().size.apply {
+        val value = Property.from(xyz.toDouble())
+        x = value
+        y = value
+        z = value
+    }
+}
