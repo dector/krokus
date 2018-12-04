@@ -11,6 +11,9 @@ fun primitiveCubeCentered() =
 
 fun primitiveCubeWithModifier() =
     cube {
+        // size = 10
+        // width = 10
+
         size(10)
     }
 

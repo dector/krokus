@@ -14,6 +14,7 @@ data class Vector3(
     companion object {
 
         val Origin = Vector3()
+        val Empty = Vector3()
     }
 }
 

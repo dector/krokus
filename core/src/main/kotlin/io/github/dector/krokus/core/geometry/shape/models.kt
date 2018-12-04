@@ -22,7 +22,7 @@ sealed class Shape
 
 
 data class Cube(
-    val size: Vector3,
+    val size: Vector3 = Vector3.Empty,
     val origin: Origin = Origin.Center
 ) : Shape() {
 

@@ -2,6 +2,7 @@ package io.github.dector.krokus.core.geometry
 
 import io.github.dector.krokus.core.geometry.shape.Cube
 import io.github.dector.krokus.core.properties.Property
+import io.github.dector.krokus.core.properties.unpackOrSet
 
 
 //fun Geometry.findSide(side: Side, applyTranslation: Boolean = true) = when (this) {
@@ -38,10 +39,13 @@ import io.github.dector.krokus.core.properties.Property
 //    get() = shape.height
 
 fun ShapeGeometry<Cube>.size(xyz: Number) {
-    shape().size.apply {
-        val value = Property.from(xyz.toDouble())
-        x = value
-        y = value
-        z = value
+    shape.unpackOrSet { Cube() }.size.apply {
+        val value = xyz.toDouble()
+
+        Property.from(value).let {
+            x = it
+            y = it
+            z = it
+        }
     }
 }
