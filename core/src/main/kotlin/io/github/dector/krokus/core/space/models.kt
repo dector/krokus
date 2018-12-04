@@ -25,6 +25,14 @@ val Vector3.isZero: Boolean get() = x.ref().isZero && y.ref().isZero && z.ref().
 val Vector3.isNotZero: Boolean get() = !isZero
 val Vector3.allAreEqual: Boolean get() = x.ref() == y.ref() && x.ref() == z.ref()
 
+operator fun Vector3.unaryMinus() = let { current ->
+    Vector3(
+        x = Property.from { -current.x() },
+        y = Property.from { -current.y() },
+        z = Property.from { -current.z() }
+    )
+}
+
 data class Angle3(val x: Double = 0.0, val y: Double = 0.0, val z: Double = 0.0) {
 
     val isZero = x == 0.0 && y == 0.0 && z == 0.0

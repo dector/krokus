@@ -7,7 +7,7 @@ interface Property<T> {
     var ref: Producer<T>
 
     fun set(value: T) {
-        ref = { value }
+        ref = ScalarProducer(value)
     }
 
     fun set(value: Producer<T>) {

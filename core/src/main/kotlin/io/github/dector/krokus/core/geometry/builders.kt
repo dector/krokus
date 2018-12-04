@@ -23,6 +23,7 @@ fun cylinder(height: Double, radius: Double) = ShapeGeometry(
 )
 
 fun cylinder(height: Number, radius: Number) = cylinder(height.toDouble(), radius.toDouble())
+fun cylinder(heightAndRadius: Number) = cylinder(heightAndRadius, heightAndRadius)
 
 fun cone(height: Number, radiusBottom: Number, radiusTop: Number = radiusBottom) =
     ShapeGeometry(
