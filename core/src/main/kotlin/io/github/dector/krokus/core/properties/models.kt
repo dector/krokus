@@ -10,6 +10,10 @@ interface Property<T> {
         ref = ScalarProducer(value)
     }
 
+    fun set(prop: Property<T>) {
+        ref = prop.ref
+    }
+
     fun set(value: Producer<T>) {
         ref = value
     }

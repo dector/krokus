@@ -1,6 +1,7 @@
 package io.github.dector.krokus.api
 
 import io.github.dector.krokus.core.geometry.Geometry
+import io.github.dector.krokus.core.properties.Property
 import io.github.dector.krokus.core.space.Vector3
 import io.github.dector.krokus.core.space.plus
 import io.github.dector.krokus.core.space.v
@@ -56,3 +57,7 @@ fun Geometry.moveBy(delta: Vector3) = apply {
 //
 //@Deprecated("Use from api", ReplaceWith("cornerOrigin()"))
 //fun ShapeGeometry<Cube>.uncenter() = moveBy(shape.size / 2)
+
+fun Geometry.moveTo(prop: Property<Vector3>) = apply {
+    translation().position.set(prop)
+}

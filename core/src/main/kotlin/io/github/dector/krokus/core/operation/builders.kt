@@ -8,6 +8,11 @@ fun union(initializer: UnionBuilder.() -> Unit): Union = UnionBuilder().run {
     invoke()
 }
 
+fun difference(initializer: DifferenceBuilder.() -> Unit): Difference = DifferenceBuilder().run {
+    initializer()
+    invoke()
+}
+
 class UnionBuilder {
 
     private val children = mutableListOf<Geometry>()
@@ -21,3 +26,17 @@ class UnionBuilder {
     operator fun Geometry.unaryPlus() = appendHere()
 }
 
+class DifferenceBuilder {
+
+    lateinit var source: Geometry
+
+    private val children = mutableListOf<Geometry>()
+
+    operator fun invoke() = Difference({ source }) { children }
+
+    fun <T : Geometry> T.appendHere(): T = also {
+        children += this
+    }
+
+    operator fun Geometry.unaryPlus() = appendHere()
+}
