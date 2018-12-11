@@ -16,32 +16,25 @@ fun main(args: Array<String>) {
 }
 
 fun shelvesTriCorner() = union {
-    val innerDepth = Property.from(5.0)
-    val length = Property.from(5.0)
+    val innerDepth = Property.from(20.0)
+    val length = Property.from(10.0)
 
-    val shelfThickness = Property.from(18.0)
-    val thickness = Property.from(0.5)
+    val shelfThickness = Property.from(19.0)
+    val thickness = Property.from(1.0)
     val innerGap = Property.from(0.0)
 
-    val pattern = ConnectorPattern(
-        up = true, down = true,
-        right = true, left = true
-    )
+    val pattern = connector(3)
 
     // Central
     val centralCut = cube {
-        shape().size.apply {
-            x.set { shelfThickness() + 2 * innerGap() }
-            y.set { shelfThickness() + 2 * innerGap() }
-            z.set { innerDepth() + innerGap() }
-        }
+        width = p { shelfThickness() + 2 * innerGap() }
+        depth = p { shelfThickness() + 2 * innerGap() }
+        height = p { innerDepth() + innerGap() }
     }
     val centralShell = cube {
-        shape().size.apply {
-            x.set { centralCut.shape().size.x() + 2 * thickness() }
-            y.set { centralCut.shape().size.y() + 2 * thickness() }
-            z.set { centralCut.shape().size.z() + thickness() }
-        }
+        width = p { centralCut.shape().size.x() + 2 * thickness() }
+        depth = p { centralCut.shape().size.y() + 2 * thickness() }
+        height = p { centralCut.shape().size.z() + thickness() }
     }
     +difference {
         source = centralShell
@@ -136,75 +129,6 @@ fun shelvesTriCorner() = union {
         if (pattern.up) +sleeve(+1)
         if (pattern.down) +sleeve(-1)
     }
-
-    // ---------
-
-    /*val outerVertical = cube {
-        shape().size.apply {
-            x = shelfThickness + 2 * (thickness + innerGap)
-            y = depth //+ thickness + innerGap
-            z = (shelfThickness + 2 * (thickness + innerGap)) + 2 * (length)
-        }
-    }
-
-    val outerHorizontal = cube {
-        shape().size.apply {
-            x = length
-            y = depth //+ thickness + innerGap
-            z = shelfThickness + 2 * (thickness + innerGap)
-        }
-    }
-
-    +difference {
-        // Shell
-        source = union {
-            +outerVertical
-
-            +outerHorizontal
-                .moveTo(Property.from {
-                    Vector3(
-                        x = (outerVertical.shape().size.x + outerHorizontal.shape().size.x) / 2
-                    )
-                })
-        }
-
-        // Cut
-        +union {
-            +cube {
-                val refSize = outerVertical.shape().size
-
-                shape().size.apply {
-                    x = shelfThickness + 2 * innerGap
-                    y = refSize.y - (thickness + innerGap)
-                    z = refSize.z
-                }
-                moveTo(Property.from {
-                    Vector3(
-                        y = -(thickness + innerGap) / 2
-                    )
-                })
-            }
-
-            +cube {
-                val refSize = outerHorizontal.shape().size
-
-                shape().size.apply {
-                    x = refSize.x + (thickness + innerGap)
-                    y = refSize.y - (thickness + innerGap)
-                    z = refSize.z - 2 * (thickness + innerGap)
-                }
-                moveTo(Property.from {
-                    val refPosition = outerHorizontal.translation().position()
-
-                    Vector3(
-                        x = refPosition.x - thickness / 2,
-                        y = refPosition.y - (thickness + innerGap) / 2,
-                        z = refPosition.z
-                    )
-                })
-            }
-        }
-    }*/
 }
 
 data class ConnectorPattern(
@@ -213,3 +137,14 @@ data class ConnectorPattern(
     val left: Boolean = false,
     val right: Boolean = false
 )
+
+data class Connector(val cutsPattern: ConnectorPattern, val sleevesPattern: ConnectorPattern)
+
+fun connector(sides: Int, runaway: Boolean = false) = when (sides) {
+    0 -> ConnectorPattern()
+    1 -> ConnectorPattern(up = true)
+    2 -> if (runaway) ConnectorPattern(left = true, right = true) else ConnectorPattern(up = true, right = true)
+    3 -> ConnectorPattern(up = true, left = true, right = true)
+    4 -> ConnectorPattern(up = true, down = true, left = true, right = true)
+    else -> throw IllegalArgumentException("Number of sides should be in range 0..4")
+}
