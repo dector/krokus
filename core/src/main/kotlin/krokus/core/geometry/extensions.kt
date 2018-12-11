@@ -43,9 +43,9 @@ fun ShapeGeometry<Cube>.size(xyz: Number) {
         val value = xyz.toDouble()
 
         Property.from(value).let {
-            x = it
-            y = it
-            z = it
+            x.set(it)
+            y.set(it)
+            z.set(it)
         }
     }
 }

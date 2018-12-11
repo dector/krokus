@@ -6,9 +6,9 @@ import krokus.core.properties.Property
 data class Vector2(val x: Float = 0f, val y: Float = 0f)
 
 data class Vector3(
-    var x: Property<Double> = Property.from(0.0),
-    var y: Property<Double> = Property.from(0.0),
-    var z: Property<Double> = Property.from(0.0)
+    val x: Property<Double> = Property.from(0.0),
+    val y: Property<Double> = Property.from(0.0),
+    val z: Property<Double> = Property.from(0.0)
 ) {
 
     companion object {
