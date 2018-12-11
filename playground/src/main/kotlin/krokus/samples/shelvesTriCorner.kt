@@ -1,11 +1,12 @@
 package krokus.samples
 
 import krokus.api.moveTo
-import krokus.core.geometry.cube
+import krokus.core.geometry.*
+import krokus.core.geometry.shape.Cube
 import krokus.core.operation.difference
 import krokus.core.operation.union
 import krokus.core.properties.Property
-import krokus.core.space.Vector3
+import krokus.core.properties.p
 import krokus.openscad.OpenScadExporter
 import java.io.File
 
@@ -15,38 +16,125 @@ fun main(args: Array<String>) {
 }
 
 fun shelvesTriCorner() = union {
-    val depth = Property.from(5.0)
+    val innerDepth = Property.from(5.0)
     val length = Property.from(5.0)
 
     val shelfThickness = Property.from(18.0)
     val thickness = Property.from(0.5)
     val innerGap = Property.from(0.0)
 
-    val pattern = ConnectorPattern()
+    val pattern = ConnectorPattern(
+        up = true, down = true,
+        right = true, left = true
+    )
 
     // Central
+    val centralCut = cube {
+        shape().size.apply {
+            x.set { shelfThickness() + 2 * innerGap() }
+            y.set { shelfThickness() + 2 * innerGap() }
+            z.set { innerDepth() + innerGap() }
+        }
+    }
+    val centralShell = cube {
+        shape().size.apply {
+            x.set { centralCut.shape().size.x() + 2 * thickness() }
+            y.set { centralCut.shape().size.y() + 2 * thickness() }
+            z.set { centralCut.shape().size.z() + thickness() }
+        }
+    }
     +difference {
-        val cut = cube {
-            shape().size.apply {
-                x.set(shelfThickness)
-                y.set(shelfThickness)
-                z.set(depth)
-            }
+        source = centralShell
+
+        +centralCut.moveTo {
+            z.set { thickness() / 2 }
         }
 
-        source = cube {
-            shape().size.apply {
-                x.set { cut.shape().size.x() + 2 * (thickness() + innerGap()) }
-                y.set { cut.shape().size.y() + 2 * (thickness() + innerGap()) }
-                z.set { cut.shape().size.z() + (thickness() + innerGap()) }
+        if (pattern.right || pattern.left) {
+            fun cut(xShiftMultiplier: Int) = cube {
+                width = thickness
+                depth = p { shelfThickness() + 2 * innerGap() }
+                height = centralCut.shape().size.z
+            }.run {
+                moveTo {
+                    x.set { xShiftMultiplier * (centralCut.width() / 2 + width() / 2) }
+                    z.set(centralCut.z)
+                }
             }
+
+            if (pattern.right) +cut(+1)
+            if (pattern.left) +cut(-1)
+        }
+        if (pattern.up || pattern.down) {
+            fun cut(yShiftMultiplier: Int) = cube {
+                width = p { shelfThickness() + 2 * innerGap() }
+                depth = thickness
+                height = centralCut.shape().size.z
+            }.run {
+                moveTo {
+                    y.set { yShiftMultiplier * (centralCut.depth() / 2 + depth() / 2) }
+                    z.set(centralCut.z)
+                }
+            }
+
+            if (pattern.up) +cut(+1)
+            if (pattern.down) +cut(-1)
+        }
+    }
+
+    if (pattern.right || pattern.left) {
+        fun cut() = cube {
+            width = length
+            depth = p { shelfThickness() + 2 * innerGap() }
+            height = centralCut.height
         }
 
-        +cut.moveTo(Property.from {
-            Vector3().apply {
-                z.set { thickness() + innerGap() }
+        fun shell(cut: ShapeGeometry<Cube>) = cube {
+            width = cut.width
+            depth = p { cut.depth() + 2 * thickness() }
+            height = centralShell.height
+        }
+
+        val cut = cut()
+        val shell = shell(cut)
+
+        fun sleeve(xShiftMultiplier: Int) = difference(shell) {
+            +cut.moveTo {
+                z.set { thickness() / 2 }
             }
-        })
+        }.moveTo {
+            x.set { xShiftMultiplier * (centralShell.width() / 2 + shell.width() / 2) }
+        }
+
+        if (pattern.right) +sleeve(+1)
+        if (pattern.left) +sleeve(-1)
+    }
+    if (pattern.up || pattern.down) {
+        fun cut() = cube {
+            width = p { shelfThickness() + 2 * innerGap() }
+            depth = length
+            height = centralCut.height
+        }
+
+        fun shell(cut: ShapeGeometry<Cube>) = cube {
+            width = p { cut.width() + 2 * thickness() }
+            depth = cut.depth
+            height = centralShell.height
+        }
+
+        val cut = cut()
+        val shell = shell(cut)
+
+        fun sleeve(yShiftMultiplier: Int) = difference(shell) {
+            +cut.moveTo {
+                z.set { thickness() / 2 }
+            }
+        }.moveTo {
+            y.set { yShiftMultiplier * (centralShell.depth() / 2 + shell.depth() / 2) }
+        }
+
+        if (pattern.up) +sleeve(+1)
+        if (pattern.down) +sleeve(-1)
     }
 
     // ---------
@@ -119,4 +207,9 @@ fun shelvesTriCorner() = union {
     }*/
 }
 
-data class ConnectorPattern(val s: String = "")
+data class ConnectorPattern(
+    val up: Boolean = false,
+    val down: Boolean = false,
+    val left: Boolean = false,
+    val right: Boolean = false
+)

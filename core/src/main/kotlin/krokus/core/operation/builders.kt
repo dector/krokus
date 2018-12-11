@@ -8,6 +8,12 @@ fun union(initializer: UnionBuilder.() -> Unit): Union = UnionBuilder().run {
     invoke()
 }
 
+fun difference(source: Geometry, initializer: DifferenceBuilder.() -> Unit): Difference = DifferenceBuilder().run {
+    this.source = source
+    initializer()
+    invoke()
+}
+
 fun difference(initializer: DifferenceBuilder.() -> Unit): Difference = DifferenceBuilder().run {
     initializer()
     invoke()

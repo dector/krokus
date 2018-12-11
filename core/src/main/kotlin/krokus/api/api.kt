@@ -61,3 +61,7 @@ fun Geometry.moveBy(delta: Vector3) = apply {
 fun Geometry.moveTo(prop: Property<Vector3>) = apply {
     translation().position.set(prop)
 }
+
+fun Geometry.moveTo(builder: Vector3.() -> Unit) = moveTo(Property.from {
+    Vector3().apply(builder)
+})
