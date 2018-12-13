@@ -6,6 +6,8 @@ import krokus.core.geometry.shape.Cube
 import krokus.core.operation.difference
 import krokus.core.operation.union
 import krokus.core.properties.Property
+import krokus.core.properties.div
+import krokus.core.properties.minus
 import krokus.core.properties.p
 import krokus.openscad.OpenScadExporter
 import java.io.File
@@ -15,21 +17,22 @@ fun main(args: Array<String>) {
     OpenScadExporter(dryRun = true).export(shelvesTriCorner(), File("/tmp/test.scad"))
 }
 
+val outerDepth = Property.from(25.0)
+val innerDepth = Property.from(10.0)
+val length = Property.from(25.0)
+
+val shelfThickness = Property.from(19.0)
+val thickness = Property.from(1.0)
+val innerGap = Property.from(0.0)
+
+val pattern = connector(3)
+
 fun shelvesTriCorner() = union {
-    val innerDepth = Property.from(20.0)
-    val length = Property.from(10.0)
-
-    val shelfThickness = Property.from(19.0)
-    val thickness = Property.from(1.0)
-    val innerGap = Property.from(0.0)
-
-    val pattern = connector(3)
-
     // Central
     val centralCut = cube {
         width = p { shelfThickness() + 2 * innerGap() }
         depth = p { shelfThickness() + 2 * innerGap() }
-        height = p { innerDepth() + innerGap() }
+        height = p { outerDepth() + innerGap() }
     }
     val centralShell = cube {
         width = p { centralCut.shape().size.x() + 2 * thickness() }
@@ -128,6 +131,20 @@ fun shelvesTriCorner() = union {
 
         if (pattern.up) +sleeve(+1)
         if (pattern.down) +sleeve(-1)
+    }
+}.let {
+    difference {
+        source = it
+
+        // Hack for shorter innerDepth
+        +cube {
+            width = p { length() * 3 }
+            depth = p { length() * 1.5 }
+            height = outerDepth - innerDepth - thickness
+
+            z = height / 2 - thickness / 2
+            y = depth / 2
+        }
     }
 }
 
