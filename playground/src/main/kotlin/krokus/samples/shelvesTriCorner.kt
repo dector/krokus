@@ -17,12 +17,12 @@ fun main(args: Array<String>) {
     OpenScadExporter(dryRun = true).export(shelvesTriCorner(), File("/tmp/test.scad"))
 }
 
-val outerDepth = Property.from(25.0)
+val outerDepth = Property.from(27.0)
 val innerDepth = Property.from(10.0)
-val length = Property.from(25.0)
+val length = Property.from(27.0)
 
-val shelfThickness = Property.from(19.0)
-val thickness = Property.from(1.0)
+val shelfThickness = Property.from(19.3)
+val thickness = Property.from(0.85)
 val innerGap = Property.from(0.0)
 
 val pattern = connector(3)
@@ -142,7 +142,7 @@ fun shelvesTriCorner() = union {
             depth = p { length() * 1.5 }
             height = outerDepth - innerDepth - thickness
 
-            z = height / 2 - thickness / 2
+            z = height / 2 - thickness
             y = depth / 2
         }
     }
