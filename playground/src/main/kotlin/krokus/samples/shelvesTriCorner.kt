@@ -25,7 +25,7 @@ val shelfThickness = Property.from(19.3)
 val thickness = Property.from(0.85)
 val innerGap = Property.from(0.0)
 
-val pattern = connector(2)
+val pattern = connector(4)
 
 fun shelvesTriCorner() = union {
     // Central
@@ -138,13 +138,13 @@ fun shelvesTriCorner() = union {
 
         // Hack for shorter innerDepth
         +cube {
-            width = p { length() * 2 }
-            depth = p { length() * 1.5 }
+            width = p { length() * 4 }
+            depth = p { length() * 4 }
             height = outerDepth - innerDepth - thickness
 
-            x = width / 2
+//            x = width / 2
+//            y = depth / 2
             z = height / 2 - thickness
-            y = depth / 2
         }
     }
 }
