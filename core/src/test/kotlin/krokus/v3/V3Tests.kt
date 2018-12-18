@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assert
 import assertk.assertions.isNotNull
 import assertk.catch
+import krokus.v3.Cube.Origin.Center
 import krokus.v3.ext.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -12,12 +13,16 @@ internal class V3Tests {
 
     @Test
     fun createSimpleCube() {
-        val cube = CubeImpl()
+        val cube = MutableCube()
 
         assert(cube).all {
+            hasSize(1)
+
             hasWidth(1)
             hasDepth(1)
             hasHeight(1)
+
+            hasOrigin(Center)
 
             hasPositionX(0)
             hasPositionY(0)
@@ -28,6 +33,19 @@ internal class V3Tests {
             hasRotationZ(0)
 
             hasColor(Color.Black)
+        }
+    }
+
+    @Test
+    fun createSimpleCubeWithCustomSize() {
+        val cube = MutableCube().apply {
+            size = MutableDimensions(10.0, 20.0, 30.0)
+        }
+
+        assert(cube).all {
+            hasWidth(10)
+            hasDepth(20)
+            hasHeight(30)
         }
     }
 

@@ -3,7 +3,6 @@ package krokus.samples.utils
 import krokus.core.assembly.Assembly
 import krokus.core.component.Component
 import krokus.core.geometry.Geometry
-import krokus.openscad.OpenScadExporter
 import java.io.File
 
 

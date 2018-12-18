@@ -2,15 +2,18 @@ package krokus.v3.ext
 
 import assertk.Assert
 import assertk.assertions.support.fail
-import krokus.v3.Color
-import krokus.v3.ColorComponent
-import krokus.v3.Cube
+import krokus.v3.*
 
 
 infix fun Assert<Double>.isEqualToInt(expected: Int) {
     if (actual == expected.toDouble()) return
     fail(expected, actual)
 }
+
+infix fun Assert<Cube>.hasSize(expected: Number) = hasSize(expected.toDouble())
+infix fun Assert<Cube>.hasSize(expected: Double) = hasSize(MutableDimensions(expected, expected, expected))
+infix fun Assert<Cube>.hasSize(expected: Dimensions) =
+    test(expected, actual.size, ::areEquals)
 
 infix fun Assert<Cube>.hasWidth(expected: Number) = hasWidth(expected.toDouble())
 infix fun Assert<Cube>.hasWidth(expected: Double) =
@@ -54,6 +57,9 @@ infix fun Assert<Cube>.hasColor(expected: Color) =
 infix fun Assert<Color>.hasRedComponent(expected: ColorComponent) = test(expected, actual.r, ::areEquals)
 infix fun Assert<Color>.hasGreenComponent(expected: ColorComponent) = test(expected, actual.g, ::areEquals)
 infix fun Assert<Color>.hasBlueComponent(expected: ColorComponent) = test(expected, actual.b, ::areEquals)
+
+infix fun Assert<Cube>.hasOrigin(expected: Cube.Origin) =
+    test(expected, actual.origin, ::areEquals)
 
 // Support
 

@@ -14,14 +14,14 @@ interface Body : Positionable, Rotatable, Colorable
 
 interface CompositeBody : Body {
 
-    var children: MutableList<Body>
+    val children: List<Body>
 }
 
 interface UnionBody : CompositeBody
 
 interface DifferenceBody : CompositeBody {
 
-    var source: Body
+    val source: Body
 }
 
 interface IntersectionBody : CompositeBody
@@ -30,63 +30,109 @@ interface PrimitiveBody : Body
 
 interface Cube : PrimitiveBody {
 
-    var width: Distance
-    var depth: Distance
-    var height: Distance
+    val size: Dimensions
+
+    val width: Distance
+        get() = size.x
+    /*set(value) {
+        size.x = value
+    }*/
+
+    val depth: Distance
+        get() = size.y
+    /*set(value) {
+        size.y = value
+    }*/
+
+    val height: Distance
+        get() = size.z
+    /*set(value) {
+        size.z = value
+    }*/
+
+    val origin: Origin
+
+    enum class Origin {
+        Center, Corner
+    }
 }
 
 interface Sphere : PrimitiveBody {
 
-    var radius: Distance
+    val radius: Distance
 }
 
 interface Cylinder : PrimitiveBody {
 
-    var radius: Distance
-    var height: Distance
+    val radius: Distance
+    val height: Distance
+
+    val origin: Origin
+
+    enum class Origin {
+        Center, Bottom
+    }
 }
 
 // Properties
 
 interface Positionable {
 
-    var position: Vec3
+    val position: Vec3
 }
 
 interface Rotatable {
 
-    var rotation: Ang3
+    val rotation: Ang3
 }
 
 interface Colorable {
 
-    var color: Color
+    val color: Color
 }
 
 // Math
 
 interface Vec3 {
-    var x: Coordinate
-    var y: Coordinate
-    var z: Coordinate
+    val x: Coordinate
+    val y: Coordinate
+    val z: Coordinate
 }
 
 interface Ang3 {
-    var x: Angle
-    var y: Angle
-    var z: Angle
+    val x: Angle
+    val y: Angle
+    val z: Angle
+}
+
+interface Dimensions {
+    val x: Distance
+    val y: Distance
+    val z: Distance
 }
 
 interface Color {
-    var r: ColorComponent
-    var g: ColorComponent
-    var b: ColorComponent
+    val r: ColorComponent
+    val g: ColorComponent
+    val b: ColorComponent
 
-    //var a: ColorComponent
+    //val a: ColorComponent
 
     companion object {
 
         /* Base colors */
+
+        val Undefined = object : Color {
+            override val r: ColorComponent
+                get() = Double.NaN
+                /*set(value) {}*/
+            override val g: ColorComponent
+                get() = Double.NaN
+                /*set(value) {}*/
+            override val b: ColorComponent
+                get() = Double.NaN
+                /*set(value) {}*/
+        }
 
         val White = ImmutableColor(r = 1.0, g = 1.0, b = 1.0)
         val Black = ImmutableColor(r = 0.0, g = 0.0, b = 0.0)
@@ -103,22 +149,22 @@ class ImmutableColor(
     b: ColorComponent = 0.0
 ) : Color {
 
-    override var r: ColorComponent = r
-        set(value) {
-            throw Error("This color instance is immutable")
-        }
+    override val r: ColorComponent = r
+    /*set(value) {
+        throw Error("This color instance is immutable")
+    }*/
 
-    override var g: ColorComponent = g
-        set(value) {
-            throw Error("This color instance is immutable")
-        }
+    override val g: ColorComponent = g
+    /*set(value) {
+        throw Error("This color instance is immutable")
+    }*/
 
-    override var b: ColorComponent = b
-        set(value) {
-            throw Error("This color instance is immutable")
-        }
+    override val b: ColorComponent = b
+    /*set(value) {
+        throw Error("This color instance is immutable")
+    }*/
 
-    fun asMutable() = ColorImpl(r = r, g = g, b = b)
+    fun asMutable() = MutableColor(r = r, g = g, b = b)
 
     override fun equals(other: Any?) = (this === other) || equals(other as? Color)
     override fun hashCode() = Objects.hash(r, g, b)

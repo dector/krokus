@@ -9,7 +9,6 @@ import krokus.core.properties.Property
 import krokus.core.properties.div
 import krokus.core.properties.minus
 import krokus.core.properties.p
-import krokus.openscad.OpenScadExporter
 import java.io.File
 
 
