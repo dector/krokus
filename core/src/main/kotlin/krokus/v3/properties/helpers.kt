@@ -1,4 +1,4 @@
-package krokus.v3
+package krokus.v3.properties
 
 
 fun Dimensions.allAreEquals(): Boolean = x == y && y == z

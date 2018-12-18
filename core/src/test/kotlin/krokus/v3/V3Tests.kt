@@ -2,11 +2,12 @@ package krokus.v3
 
 import assertk.all
 import assertk.assert
-import assertk.assertions.isNotNull
-import assertk.catch
-import krokus.v3.Cube.Origin.Center
+import krokus.v3.bodies.Cube.Origin.Center
+import krokus.v3.bodies.MutableCube
 import krokus.v3.ext.*
-import org.junit.jupiter.api.DisplayName
+import krokus.v3.properties.Color
+import krokus.v3.properties.MutableDimensions
+import krokus.v3.properties.mutate
 import org.junit.jupiter.api.Test
 
 internal class V3Tests {
@@ -50,20 +51,9 @@ internal class V3Tests {
     }
 
     @Test
-    @DisplayName("Modifying base (immutable) color should throw Error")
-    fun modifyingBaseColorException() {
-        val color = Color.Black
-
-        val exception = catch {
-            color.r = 1.0
-        }
-        assert(exception).isNotNull()
-    }
-
-    @Test
     fun mutateBaseColor() {
         val color = Color.Black
-        val newColor = color.asMutable().apply {
+        val newColor = color.mutate().apply {
             r = 1.0
             g = 1.0
             b = 1.0

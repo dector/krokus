@@ -1,7 +1,7 @@
 package krokus.v3.openscad
 
 import krokus.openscad.notImplemented
-import krokus.v3.*
+import krokus.v3.bodies.*
 
 
 class OpenScadBodyConverter(

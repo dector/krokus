@@ -2,7 +2,7 @@ package krokus.v3.openscad
 
 import assertk.assert
 import assertk.assertions.isEqualTo
-import krokus.v3.*
+import krokus.v3.bodies.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

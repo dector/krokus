@@ -1,6 +1,7 @@
 package krokus.v3.openscad
 
-import krokus.v3.*
+import krokus.v3.bodies.*
+import krokus.v3.properties.*
 
 
 /**
