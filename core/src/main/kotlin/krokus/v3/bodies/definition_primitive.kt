@@ -1,22 +1,8 @@
 package krokus.v3.bodies
 
-import krokus.v3.properties.*
+import krokus.v3.properties.Dimensions
+import krokus.v3.properties.Distance
 
-
-interface Body : Positionable, Rotatable, Colorable
-
-interface CompositeBody : Body {
-
-    val children: List<Body>
-}
-
-interface UnionBody : CompositeBody
-interface DifferenceBody : CompositeBody {
-
-    val source: Body
-}
-
-interface IntersectionBody : CompositeBody
 
 interface PrimitiveBody : Body
 interface Cube : PrimitiveBody {

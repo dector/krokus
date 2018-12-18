@@ -78,11 +78,13 @@ class OpenScadTokenizer {
     }
 
     fun difference(difference: DifferenceBody, entitiesConverter: (Body) -> String) = buildString {
-        append("difference(){\n")
+        append("difference() {\n")
         append(entitiesConverter(difference.source))
         difference.children.joinAllTo(this, entitiesConverter)
         append("}")
     }
+
+    fun highlighted() = "#"
 }
 
 private fun ColorComponent.asOpenScadValue(precision: Int = 2) =

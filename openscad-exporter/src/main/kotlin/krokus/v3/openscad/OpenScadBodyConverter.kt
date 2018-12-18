@@ -12,21 +12,25 @@ class OpenScadBodyConverter(
         convertModificationsFor(body) + convertShape(body)
 
     private fun convertModificationsFor(body: Body) = buildString {
+        if (body.highlighted)
+            append(tokenizer.highlighted())
+
+        append(tokenizer color body.color)
         append(tokenizer translation body.position)
+
         append(tokenizer rotation body.rotation)
+
         /*if (geometry.hasMirroring) {
             append("mirror(")
             append(krokus.v3.openscad.asString())
             append(") ")
         }*/
-
-        append(tokenizer color body.color)
     }
 
-    private fun convertShape(body: Body) = when (body) {
-        is PrimitiveBody -> convertPrimitive(body)
-        is CompositeBody -> convertComposite(body)
-        else -> throw notImplemented(body)
+    private fun convertShape(shape: Shape) = when (shape) {
+        is PrimitiveBody -> convertPrimitive(shape)
+        is CompositeBody -> convertComposite(shape)
+        else -> throw notImplemented(shape)
     }
 
     private fun convertPrimitive(body: PrimitiveBody) = when (body) {

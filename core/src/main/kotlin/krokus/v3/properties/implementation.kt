@@ -7,13 +7,13 @@ data class MutableDimensions(
     override var z: Distance = 1.0
 ) : Dimensions
 
-data class MutableVector(
+data class MutableVec3(
     override var x: Coordinate = 0.0,
     override var y: Coordinate = 0.0,
     override var z: Coordinate = 0.0
 ) : Vec3
 
-data class MutableAngles(
+data class MutableAng3(
     override var x: Angle = 0.0,
     override var y: Angle = 0.0,
     override var z: Angle = 0.0
@@ -23,4 +23,9 @@ data class MutableColor(
     override var r: ColorComponent = 0.0,
     override var g: ColorComponent = 0.0,
     override var b: ColorComponent = 0.0
-) : Color
+) : Color {
+
+    override fun equals(other: Any?) = (this === other) || equalTo(other as? Color)
+    override fun hashCode() = countHashCode()
+    override fun toString() = hexValue()
+}

@@ -33,7 +33,7 @@ internal class V3Tests {
             hasRotationY(0)
             hasRotationZ(0)
 
-            hasColor(Color.Black)
+            hasColor(Color.Undefined)
         }
     }
 

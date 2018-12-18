@@ -1,9 +1,16 @@
 package krokus.v3.properties
 
+import java.util.*
+
 typealias Coordinate = Double       // (-∞, +∞)
 typealias Angle = Double            // (-∞, +∞)
 typealias Distance = Double         // (-∞, +∞)
 typealias ColorComponent = Double   // [0, 1]
+
+interface Highlightable {
+
+    val highlighted: Boolean get() = false
+}
 
 interface Positionable {
 
@@ -52,13 +59,14 @@ interface Color {
         val Undefined = object : Color {
             override val r: ColorComponent
                 get() = Double.NaN
-                /*set(value) {}*/
             override val g: ColorComponent
                 get() = Double.NaN
-                /*set(value) {}*/
             override val b: ColorComponent
                 get() = Double.NaN
-                /*set(value) {}*/
+
+            override fun equals(other: Any?) = this === other
+            override fun hashCode() = Objects.hash(Double.NaN, Double.NaN, Double.NaN)
+            override fun toString() = "n/a"
         }
 
         val White = ImmutableColor(r = 1.0, g = 1.0, b = 1.0)
